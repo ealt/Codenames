@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package code_talker;
+
+enum Role {
+    UNSPECIFIED_ROLE = 0;
+    CODEMASTER = 1;
+    INTERPRETER = 2;
+}
+
+message PlayerType {
+    int32 team = 1;
+    Role role = 2;
+}
+
+message AgentSet {
+    repeated string names = 1;
+}
+
+message SecretInformation {
+    map<int32, AgentSet> agent_sets = 1;
+}
+
+message CommonInformation {
+    map<int32, int32> identity_counts = 1;
+    map<int32, AgentSet> agent_sets = 2;
+}
+
+message Clue {
+    string word = 1;
+    oneof quantity {
+        bool unlimited = 2;
+        int32 number = 3;
+    }
+}
+
+message SharedClue {
+    int32 team = 1;
+    Clue clue = 2;
+}
+
+message Action {
+    oneof action_type {
+        bool pass_turn = 1;
+        string guess = 2;
+    }
+}
+
+message ActionOutcome {
+    int32 identity = 1;
+}
+
+message SharedAction {
+    int32 team = 1;
+    Action action = 2;
+    ActionOutcome action_outcome = 3;
+}
