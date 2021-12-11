@@ -6,8 +6,8 @@ from codenames.core.codenames_pb2 import SharedAction, SharedClue
 class Player(abc.ABC):
 
     @abc.abstractmethod
-    def set_up(self) -> None:
-        pass
+    def set_up(self, team: int) -> None:
+        self._team = team
 
     def reveal_clue(self, shared_clue: SharedClue) -> None:
         pass
