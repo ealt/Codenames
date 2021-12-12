@@ -4,8 +4,8 @@ from typing import Optional
 from codenames.core.codenames_pb2 import (Action, Clue, CommonInformation,
                                           SecretInformation, SharedAction,
                                           SharedClue)
-from codenames.core.data_validation import (validate_clue, validate_codename,
-                                            validate_team)
+from codenames.core.data_validation import (validate_action, validate_clue,
+                                            validate_codename, validate_team)
 from codenames.core.test_data import TestData
 from codenames.core.types import (AgentDict, AgentIdentities, Codename,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
@@ -38,7 +38,8 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         shared_clues: TeamSharedClueDict = {}
     if 'actions' in dict_data:
         dict_actions = dict_data['actions']
-        actions = _get_team_action_dict(dict_actions)
+        valid_actions = _get_valid_actions(dict_actions, all_codenames)
+        actions = _get_team_action_dict(valid_actions)
         shared_actions = _get_team_shared_action_dict(actions, agent_identities)
     else:
         actions: TeamActionDict = {}
@@ -113,6 +114,16 @@ def _get_team_shared_clue_dict(clues: TeamClueDict) -> TeamSharedClueDict:
     return {
         team: [SharedClue(team=team, clue=clue) for clue in team_clues
               ] for team, team_clues in clues.items()
+    }
+
+
+def _get_valid_actions(actions: TeamStrActionDict,
+                       all_codenames: set[Codename]) -> TeamStrActionDict:
+    return {
+        team: [
+            action for action in team_actions
+            if validate_action(action, all_codenames)
+        ] for team, team_actions in actions.items() if validate_team(team)
     }
 
 

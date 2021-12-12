@@ -1,6 +1,7 @@
 from typing import Optional
 
-from codenames.core.types import Codename, DictClue, Team, Unlimited
+from codenames.core.types import (Codename, DictClue, Pass, StrAction, Team,
+                                  Unlimited)
 
 
 def validate_team(team: Team, num_teams: int = 2) -> bool:
@@ -25,4 +26,13 @@ def validate_clue(clue: DictClue,
     elif isinstance(clue['quantity'], str):
         if clue['quantity'] != Unlimited:
             return False
+    return True
+
+
+def validate_action(action: StrAction,
+                    codenames: Optional[set[Codename]]) -> bool:
+    if not isinstance(action, str):
+        return False
+    if codenames and not (action in codenames or action == Pass):
+        return False
     return True
