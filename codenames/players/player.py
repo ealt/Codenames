@@ -1,10 +1,17 @@
 import abc
 
 from codenames.core.codenames_pb2 import SharedAction, SharedClue
-from codenames.core.types import Team
+from codenames.core.types import Team, UnknownTeam
 
 
 class Player(abc.ABC):
+
+    def __init__(self) -> None:
+        self._team = UnknownTeam
+
+    @property
+    def team(self) -> Team:
+        return self._team
 
     @abc.abstractmethod
     def set_up(self, team: Team) -> None:
