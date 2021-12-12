@@ -1,6 +1,7 @@
 import abc
 
 from codenames.core.codenames_pb2 import Action, CommonInformation
+from codenames.core.types import Team
 from codenames.players.player import Player
 
 
@@ -11,7 +12,7 @@ class Interpreter(Player):
         return (hasattr(subclass, 'give_guess') and
                 (callable(subclass.give_guess) or NotImplemented))
 
-    def set_up(self, team: int, common_information: CommonInformation):
+    def set_up(self, team: Team, common_information: CommonInformation):
         super().set_up(team)
         self._common_information = common_information
 

@@ -1,6 +1,7 @@
 import abc
 
 from codenames.core.codenames_pb2 import Clue, SecretInformation
+from codenames.core.types import Team
 from codenames.players.player import Player
 
 
@@ -11,7 +12,7 @@ class Codemaster(Player):
         return (hasattr(subclass, 'give_clue') and
                 (callable(subclass.give_clue) or NotImplemented))
 
-    def set_up(self, team: int, secret_information: SecretInformation):
+    def set_up(self, team: Team, secret_information: SecretInformation):
         super().set_up(team)
         self._secret_information = secret_information
 
