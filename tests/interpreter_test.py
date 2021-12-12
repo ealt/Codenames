@@ -1,4 +1,5 @@
 import unittest
+
 from codenames.players.interpreter import Interpreter
 
 
