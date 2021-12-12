@@ -4,13 +4,14 @@ from typing import Optional
 from codenames.core.codenames_pb2 import (Action, Clue, CommonInformation,
                                           SecretInformation, SharedAction,
                                           SharedClue)
-from codenames.core.data_validation import validate_codename, validate_team
+from codenames.core.data_validation import (validate_clue, validate_codename,
+                                            validate_team)
+from codenames.core.test_data import TestData
 from codenames.core.types import (AgentDict, AgentIdentities, Codename,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
                                   TeamDictClueDict, TeamSharedActionDict,
                                   TeamSharedClueDict, TeamStrActionDict,
                                   UnknownTeam, Unlimited)
-from codenames.core.test_data import TestData
 
 
 def convert_to_pb(dict_data: DictData) -> TestData:
@@ -29,7 +30,8 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         common_information: CommonInformation = {}
     if 'clues' in dict_data:
         dict_clues = dict_data['clues']
-        clues = _get_team_clue_dict(dict_clues)
+        valid_clues = _get_valid_clues(dict_clues, all_codenames)
+        clues = _get_team_clue_dict(valid_clues)
         shared_clues = _get_team_shared_clue_dict(clues)
     else:
         clues: TeamClueDict = {}
@@ -84,6 +86,16 @@ def _get_agent_identities(agents: AgentDict) -> AgentIdentities:
     return {
         codename: team for team, codenames in agents.items()
         for codename in codenames
+    }
+
+
+def _get_valid_clues(clues: TeamDictClueDict,
+                     all_codenames: set[Codename]) -> TeamDictClueDict:
+    return {
+        team:
+        [clue for clue in team_clues if validate_clue(clue, all_codenames)]
+        for team, team_clues in clues.items()
+        if validate_team(team)
     }
 
 
