@@ -1,7 +1,7 @@
 import abc
 
-from codenames.core.codenames_pb2 import Clue, SecretInformation
-from codenames.core.types import Team
+from codenames.data.codenames_pb2 import Clue, SecretInformation
+from codenames.data.types import Team
 from codenames.players.player import Player
 
 

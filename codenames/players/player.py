@@ -1,7 +1,7 @@
 import abc
 
-from codenames.core.codenames_pb2 import SharedAction, SharedClue
-from codenames.core.types import Team, UnknownTeam
+from codenames.data.codenames_pb2 import SharedAction, SharedClue
+from codenames.data.types import Team, UnknownTeam
 
 
 class Player(abc.ABC):

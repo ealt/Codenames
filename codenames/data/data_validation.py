@@ -1,6 +1,6 @@
 from typing import Optional
 
-from codenames.core.types import (Codename, DictClue, Pass, StrAction, Team,
+from codenames.data.types import (Codename, DictClue, Pass, StrAction, Team,
                                   Unlimited)
 
 

@@ -1,13 +1,13 @@
 from collections import defaultdict
 from typing import Optional
 
-from codenames.core.codenames_pb2 import (Action, Clue, CommonInformation,
+from codenames.data.codenames_pb2 import (Action, Clue, CommonInformation,
                                           SecretInformation, SharedAction,
                                           SharedClue)
-from codenames.core.data_validation import (validate_action, validate_clue,
+from codenames.data.data_validation import (validate_action, validate_clue,
                                             validate_codename, validate_team)
-from codenames.core.test_data import TestData
-from codenames.core.types import (AgentDict, AgentIdentities, Codename,
+from codenames.data.test_data import TestData
+from codenames.data.types import (AgentDict, AgentIdentities, Codename,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
                                   TeamDictClueDict, TeamSharedActionDict,
                                   TeamSharedClueDict, TeamStrActionDict,

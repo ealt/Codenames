@@ -1,6 +1,6 @@
 from typing import NewType
 
-from codenames.core.codenames_pb2 import Action, Clue, SharedAction, SharedClue
+from codenames.data.codenames_pb2 import Action, Clue, SharedAction, SharedClue
 
 Team = NewType('Team', int)
 UnknownTeam = 0
