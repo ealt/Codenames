@@ -4,6 +4,7 @@ from typing import Optional
 from codenames.core.codenames_pb2 import (Action, Clue, CommonInformation,
                                           SecretInformation, SharedAction,
                                           SharedClue)
+from codenames.core.data_validation import validate_codename, validate_team
 from codenames.core.types import (AgentDict, AgentIdentities, Codename,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
                                   TeamDictClueDict, TeamSharedActionDict,
@@ -15,10 +16,12 @@ from codenames.core.test_data import TestData
 def convert_to_pb(dict_data: DictData) -> TestData:
     if 'agents' in dict_data:
         dict_agents = dict_data['agents']
-        all_codenames = _get_all_codenames(dict_agents)
-        agent_identities = _get_agent_identities(dict_agents)
-        secret_information = _get_secret_information(dict_agents)
-        common_information = _get_common_information(dict_agents, all_codenames)
+        valid_agents = _get_valid_agents(dict_agents)
+        all_codenames = _get_all_codenames(valid_agents)
+        agent_identities = _get_agent_identities(valid_agents)
+        secret_information = _get_secret_information(valid_agents)
+        common_information = _get_common_information(valid_agents,
+                                                     all_codenames)
     else:
         all_codenames: Optional[set[Codename]] = None
         agent_identities: AgentIdentities = {}
@@ -40,6 +43,15 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         shared_actions: TeamSharedActionDict = {}
     return TestData(secret_information, common_information, clues, shared_clues,
                     actions, shared_actions)
+
+
+def _get_valid_agents(agents: AgentDict) -> AgentDict:
+    return {
+        team: sorted([
+            codename for codename in set(codenames)
+            if validate_codename(codename)
+        ]) for team, codenames in agents.items() if validate_team(team)
+    }
 
 
 def _get_secret_information(agents: AgentDict) -> SecretInformation:
