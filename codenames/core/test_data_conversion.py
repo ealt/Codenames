@@ -1,10 +1,13 @@
+from collections import defaultdict
 from typing import Optional
 
-from codenames.core.codenames_pb2 import (Clue, CommonInformation,
-                                          SecretInformation, SharedClue)
-
-from codenames.core.types import (AgentDict, Codename, DictData, TeamClueDict,
-                                  TeamDictClueDict, TeamSharedClueDict,
+from codenames.core.codenames_pb2 import (Action, Clue, CommonInformation,
+                                          SecretInformation, SharedAction,
+                                          SharedClue)
+from codenames.core.types import (AgentDict, AgentIdentities, Codename,
+                                  DictData, Pass, TeamActionDict, TeamClueDict,
+                                  TeamDictClueDict, TeamSharedActionDict,
+                                  TeamSharedClueDict, TeamStrActionDict,
                                   UnknownTeam, Unlimited)
 from codenames.core.test_data import TestData
 
@@ -13,10 +16,12 @@ def convert_to_pb(dict_data: DictData) -> TestData:
     if 'agents' in dict_data:
         dict_agents = dict_data['agents']
         all_codenames = _get_all_codenames(dict_agents)
+        agent_identities = _get_agent_identities(dict_agents)
         secret_information = _get_secret_information(dict_agents)
         common_information = _get_common_information(dict_agents, all_codenames)
     else:
         all_codenames: Optional[set[Codename]] = None
+        agent_identities: AgentIdentities = {}
         secret_information: SecretInformation = {}
         common_information: CommonInformation = {}
     if 'clues' in dict_data:
@@ -26,8 +31,15 @@ def convert_to_pb(dict_data: DictData) -> TestData:
     else:
         clues: TeamClueDict = {}
         shared_clues: TeamSharedClueDict = {}
+    if 'actions' in dict_data:
+        dict_actions = dict_data['actions']
+        actions = _get_team_action_dict(dict_actions)
+        shared_actions = _get_team_shared_action_dict(actions, agent_identities)
+    else:
+        actions: TeamActionDict = {}
+        shared_actions: TeamSharedActionDict = {}
     return TestData(secret_information, common_information, clues, shared_clues,
-                    {}, {})
+                    actions, shared_actions)
 
 
 def _get_secret_information(agents: AgentDict) -> SecretInformation:
@@ -56,6 +68,13 @@ def _get_all_codenames(agents: AgentDict) -> list[Codename]:
     return all_codenames
 
 
+def _get_agent_identities(agents: AgentDict) -> AgentIdentities:
+    return {
+        codename: team for team, codenames in agents.items()
+        for codename in codenames
+    }
+
+
 def _get_team_clue_dict(clues: TeamDictClueDict) -> TeamClueDict:
     return {
         team: [
@@ -71,3 +90,26 @@ def _get_team_shared_clue_dict(clues: TeamClueDict) -> TeamSharedClueDict:
         team: [SharedClue(team=team, clue=clue) for clue in team_clues
               ] for team, team_clues in clues.items()
     }
+
+
+def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
+    return {
+        team: [
+            Action(pass_turn=True) if action == Pass else Action(guess=action)
+            for action in team_actions
+        ] for team, team_actions in actions.items()
+    }
+
+
+def _get_team_shared_action_dict(
+        actions: TeamActionDict,
+        agent_identities: AgentIdentities) -> TeamSharedActionDict:
+    shared_actions = defaultdict(list)
+    for team, team_actions in actions.items():
+        for action in team_actions:
+            shared_action = SharedAction(team=team, action=action)
+            if action.HasField('guess'):
+                identity = agent_identities.get(action.guess, UnknownTeam)
+                shared_action.action_outcome.identity = identity
+            shared_actions[team].append(shared_action)
+    return shared_actions

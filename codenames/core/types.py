@@ -5,6 +5,7 @@ from codenames.core.codenames_pb2 import Action, Clue, SharedAction, SharedClue
 Team = NewType('Team', int)
 UnknownTeam = 0
 Codename = NewType('Codename', str)
+AgentIdentities = dict[Codename, Team]
 
 # protobuf based test data types
 TeamClueDict = NewType('TeamClueDict', dict[Team, list[Clue]])
