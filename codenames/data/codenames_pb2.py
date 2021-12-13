@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='code_talker',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0f\x63odenames.proto\x12\x0b\x63ode_talker\";\n\nPlayerType\x12\x0c\n\x04team\x18\x01 \x01(\x05\x12\x1f\n\x04role\x18\x02 \x01(\x0e\x32\x11.code_talker.Role\"\x19\n\x08\x41gentSet\x12\r\n\x05names\x18\x01 \x03(\t\"\x9f\x01\n\x11SecretInformation\x12\x41\n\nagent_sets\x18\x01 \x03(\x0b\x32-.code_talker.SecretInformation.AgentSetsEntry\x1aG\n\x0e\x41gentSetsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.code_talker.AgentSet:\x02\x38\x01\"\xcc\x02\n\x11\x43ommonInformation\x12K\n\x0fidentity_counts\x18\x01 \x03(\x0b\x32\x32.code_talker.CommonInformation.IdentityCountsEntry\x12\x41\n\nagent_sets\x18\x02 \x03(\x0b\x32-.code_talker.CommonInformation.AgentSetsEntry\x12\'\n\x0cturn_history\x18\x03 \x03(\x0b\x32\x11.code_talker.Turn\x1a\x35\n\x13IdentityCountsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1aG\n\x0e\x41gentSetsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.code_talker.AgentSet:\x02\x38\x01\"G\n\x04\x43lue\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x13\n\tunlimited\x18\x02 \x01(\x08H\x00\x12\x10\n\x06number\x18\x03 \x01(\x05H\x00\x42\n\n\x08quantity\";\n\nSharedClue\x12\x0c\n\x04team\x18\x01 \x01(\x05\x12\x1f\n\x04\x63lue\x18\x02 \x01(\x0b\x32\x11.code_talker.Clue\"=\n\x06\x41\x63tion\x12\x13\n\tpass_turn\x18\x01 \x01(\x08H\x00\x12\x0f\n\x05guess\x18\x02 \x01(\tH\x00\x42\r\n\x0b\x61\x63tion_type\"!\n\rActionOutcome\x12\x10\n\x08identity\x18\x01 \x01(\x05\"u\n\x0cSharedAction\x12\x0c\n\x04team\x18\x01 \x01(\x05\x12#\n\x06\x61\x63tion\x18\x02 \x01(\x0b\x32\x13.code_talker.Action\x12\x32\n\x0e\x61\x63tion_outcome\x18\x03 \x01(\x0b\x32\x1a.code_talker.ActionOutcome\"Y\n\x04Turn\x12%\n\x04\x63lue\x18\x01 \x01(\x0b\x32\x17.code_talker.SharedClue\x12*\n\x07\x61\x63tions\x18\x02 \x03(\x0b\x32\x19.code_talker.SharedAction*=\n\x04Role\x12\x14\n\x10UNSPECIFIED_ROLE\x10\x00\x12\x0e\n\nCODEMASTER\x10\x01\x12\x0f\n\x0bINTERPRETER\x10\x02\x62\x06proto3'
+  serialized_pb=b'\n\x0f\x63odenames.proto\x12\x0b\x63ode_talker\";\n\nPlayerType\x12\x0c\n\x04team\x18\x01 \x01(\x05\x12\x1f\n\x04role\x18\x02 \x01(\x0e\x32\x11.code_talker.Role\"\x1d\n\x08\x41gentSet\x12\x11\n\tcodenames\x18\x01 \x03(\t\"\x9f\x01\n\x11SecretInformation\x12\x41\n\nagent_sets\x18\x01 \x03(\x0b\x32-.code_talker.SecretInformation.AgentSetsEntry\x1aG\n\x0e\x41gentSetsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.code_talker.AgentSet:\x02\x38\x01\"\xcc\x02\n\x11\x43ommonInformation\x12K\n\x0fidentity_counts\x18\x01 \x03(\x0b\x32\x32.code_talker.CommonInformation.IdentityCountsEntry\x12\x41\n\nagent_sets\x18\x02 \x03(\x0b\x32-.code_talker.CommonInformation.AgentSetsEntry\x12\'\n\x0cturn_history\x18\x03 \x03(\x0b\x32\x11.code_talker.Turn\x1a\x35\n\x13IdentityCountsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1aG\n\x0e\x41gentSetsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12$\n\x05value\x18\x02 \x01(\x0b\x32\x15.code_talker.AgentSet:\x02\x38\x01\"G\n\x04\x43lue\x12\x0c\n\x04word\x18\x01 \x01(\t\x12\x13\n\tunlimited\x18\x02 \x01(\x08H\x00\x12\x10\n\x06number\x18\x03 \x01(\x05H\x00\x42\n\n\x08quantity\";\n\nSharedClue\x12\x0c\n\x04team\x18\x01 \x01(\x05\x12\x1f\n\x04\x63lue\x18\x02 \x01(\x0b\x32\x11.code_talker.Clue\"=\n\x06\x41\x63tion\x12\x13\n\tpass_turn\x18\x01 \x01(\x08H\x00\x12\x0f\n\x05guess\x18\x02 \x01(\tH\x00\x42\r\n\x0b\x61\x63tion_type\"!\n\rActionOutcome\x12\x10\n\x08identity\x18\x01 \x01(\x05\"u\n\x0cSharedAction\x12\x0c\n\x04team\x18\x01 \x01(\x05\x12#\n\x06\x61\x63tion\x18\x02 \x01(\x0b\x32\x13.code_talker.Action\x12\x32\n\x0e\x61\x63tion_outcome\x18\x03 \x01(\x0b\x32\x1a.code_talker.ActionOutcome\"Y\n\x04Turn\x12%\n\x04\x63lue\x18\x01 \x01(\x0b\x32\x17.code_talker.SharedClue\x12*\n\x07\x61\x63tions\x18\x02 \x03(\x0b\x32\x19.code_talker.SharedAction*=\n\x04Role\x12\x14\n\x10UNSPECIFIED_ROLE\x10\x00\x12\x0e\n\nCODEMASTER\x10\x01\x12\x0f\n\x0bINTERPRETER\x10\x02\x62\x06proto3'
 )
 
 _ROLE = _descriptor.EnumDescriptor(
@@ -43,8 +43,8 @@ _ROLE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1059,
-  serialized_end=1120,
+  serialized_start=1063,
+  serialized_end=1124,
 )
 _sym_db.RegisterEnumDescriptor(_ROLE)
 
@@ -101,7 +101,7 @@ _AGENTSET = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='names', full_name='code_talker.AgentSet.names', index=0,
+      name='codenames', full_name='code_talker.AgentSet.codenames', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -120,7 +120,7 @@ _AGENTSET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=93,
-  serialized_end=118,
+  serialized_end=122,
 )
 
 
@@ -157,8 +157,8 @@ _SECRETINFORMATION_AGENTSETSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=209,
-  serialized_end=280,
+  serialized_start=213,
+  serialized_end=284,
 )
 
 _SECRETINFORMATION = _descriptor.Descriptor(
@@ -187,8 +187,8 @@ _SECRETINFORMATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=121,
-  serialized_end=280,
+  serialized_start=125,
+  serialized_end=284,
 )
 
 
@@ -225,8 +225,8 @@ _COMMONINFORMATION_IDENTITYCOUNTSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=489,
-  serialized_end=542,
+  serialized_start=493,
+  serialized_end=546,
 )
 
 _COMMONINFORMATION_AGENTSETSENTRY = _descriptor.Descriptor(
@@ -262,8 +262,8 @@ _COMMONINFORMATION_AGENTSETSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=209,
-  serialized_end=280,
+  serialized_start=213,
+  serialized_end=284,
 )
 
 _COMMONINFORMATION = _descriptor.Descriptor(
@@ -306,8 +306,8 @@ _COMMONINFORMATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=283,
-  serialized_end=615,
+  serialized_start=287,
+  serialized_end=619,
 )
 
 
@@ -354,8 +354,8 @@ _CLUE = _descriptor.Descriptor(
       name='quantity', full_name='code_talker.Clue.quantity',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=617,
-  serialized_end=688,
+  serialized_start=621,
+  serialized_end=692,
 )
 
 
@@ -392,8 +392,8 @@ _SHAREDCLUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=690,
-  serialized_end=749,
+  serialized_start=694,
+  serialized_end=753,
 )
 
 
@@ -433,8 +433,8 @@ _ACTION = _descriptor.Descriptor(
       name='action_type', full_name='code_talker.Action.action_type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=751,
-  serialized_end=812,
+  serialized_start=755,
+  serialized_end=816,
 )
 
 
@@ -464,8 +464,8 @@ _ACTIONOUTCOME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=814,
-  serialized_end=847,
+  serialized_start=818,
+  serialized_end=851,
 )
 
 
@@ -509,8 +509,8 @@ _SHAREDACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=849,
-  serialized_end=966,
+  serialized_start=853,
+  serialized_end=970,
 )
 
 
@@ -547,8 +547,8 @@ _TURN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=968,
-  serialized_end=1057,
+  serialized_start=972,
+  serialized_end=1061,
 )
 
 _PLAYERTYPE.fields_by_name['role'].enum_type = _ROLE

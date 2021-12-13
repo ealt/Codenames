@@ -60,7 +60,7 @@ def _get_valid_agents(agents: AgentDict) -> AgentDict:
 def _get_secret_information(agents: AgentDict) -> SecretInformation:
     secret_information = SecretInformation()
     for team, codenames in agents.items():
-        secret_information.agent_sets[team].names.extend(codenames)
+        secret_information.agent_sets[team].codenames.extend(codenames)
     return secret_information
 
 
@@ -70,7 +70,7 @@ def _get_common_information(agents: AgentDict,
     for team, codenames in agents.items():
         common_information.identity_counts[team] = len(codenames)
     all_codenames = sorted(list(all_codenames))
-    common_information.agent_sets[UnknownTeam].names.extend(all_codenames)
+    common_information.agent_sets[UnknownTeam].codenames.extend(all_codenames)
     return common_information
 
 

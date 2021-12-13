@@ -14,7 +14,7 @@ message PlayerType {
 }
 
 message AgentSet {
-    repeated string names = 1;
+    repeated string codenames = 1;
 }
 
 message SecretInformation {
