@@ -7,11 +7,11 @@ from codenames.players.preprogrammed_codemaster import PreprogrammedCodemaster
 
 TEST_DATA = {
     'agents': {
-        1: ['cat'],
-        2: ['dog'],
+        0: ['cat'],
+        1: ['dog'],
     },
     'clues': {
-        1: [{
+        0: [{
             'word': 'meow',
             'quantity': 1
         }, {
@@ -20,7 +20,7 @@ TEST_DATA = {
         }]
     },
     'actions': {
-        1: ['cat']
+        0: ['cat']
     },
 }
 
@@ -31,13 +31,13 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
         test_data = convert_to_pb(TEST_DATA)
         self._codemaster = PreprogrammedCodemaster()
         self.assertEqual(self._codemaster.team, UnknownTeam)
-        self._codemaster.set_up(1, test_data.common_information,
+        self._codemaster.set_up(0, test_data.common_information,
                                 test_data.secret_information,
-                                test_data.clues[1])
-        self.assertEqual(self._codemaster.team, 1)
+                                test_data.clues[0])
+        self.assertEqual(self._codemaster.team, 0)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
-        self._clues = test_data.clues[1]
+        self._clues = test_data.clues[0]
 
     def test_recieve_clue(self) -> None:
         for team_shared_clues in self._shared_clues.values():

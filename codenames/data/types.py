@@ -3,7 +3,7 @@ from typing import NewType
 from codenames.data.codenames_pb2 import Action, Clue, SharedAction, SharedClue
 
 Team = NewType('Team', int)
-UnknownTeam = 0
+UnknownTeam = -1
 Codename = NewType('Codename', str)
 AgentIdentities = dict[Codename, Team]
 Unlimited = -1
