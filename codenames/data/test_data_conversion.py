@@ -71,6 +71,7 @@ def _get_common_information(agents: AgentDict,
         common_information.identity_counts[team] = len(codenames)
     all_codenames = sorted(list(all_codenames))
     common_information.agent_sets[UnknownTeam].names.extend(all_codenames)
+    return common_information
 
 
 def _get_all_codenames(agents: AgentDict) -> list[Codename]:
