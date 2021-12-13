@@ -30,7 +30,8 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
         test_data = convert_to_pb(TEST_DATA)
         self._codemaster = PreprogrammedCodemaster()
         self.assertEqual(self._codemaster.team, UnknownTeam)
-        self._codemaster.set_up(1, test_data.secret_information,
+        self._codemaster.set_up(1, test_data.common_information,
+                                test_data.secret_information,
                                 test_data.clues[1])
         self.assertEqual(self._codemaster.team, 1)
         self._shared_clues = test_data.shared_clues

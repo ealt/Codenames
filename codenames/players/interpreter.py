@@ -13,8 +13,7 @@ class Interpreter(Player):
                 (callable(subclass.give_guess) or NotImplemented))
 
     def set_up(self, team: Team, common_information: CommonInformation):
-        super().set_up(team)
-        self._common_information = common_information
+        super().set_up(team, common_information)
 
     @abc.abstractmethod
     def give_action(self) -> Action:

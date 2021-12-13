@@ -1,6 +1,6 @@
 import abc
 
-from codenames.data.codenames_pb2 import SharedAction, SharedClue
+from codenames.data.codenames_pb2 import CommonInformation, SharedAction, SharedClue
 from codenames.data.types import Team, UnknownTeam
 
 
@@ -14,8 +14,9 @@ class Player(abc.ABC):
         return self._team
 
     @abc.abstractmethod
-    def set_up(self, team: Team) -> None:
+    def set_up(self, team: Team, common_information: CommonInformation) -> None:
         self._team = team
+        self._common_information = common_information
 
     def reveal_clue(self, shared_clue: SharedClue) -> None:
         pass
