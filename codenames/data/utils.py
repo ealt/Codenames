@@ -1,6 +1,7 @@
 from typing import Optional
 from codenames.data.codenames_pb2 import (CommonInformation, SharedAction,
                                           SharedClue, Turn)
+from codenames.data.data_validation import validate_teams
 
 
 def update_information_with_clue(common_information: CommonInformation,
@@ -31,3 +32,11 @@ def get_last_action(
         return common_information.turn_history[-1].actions[-1]
     except IndexError:
         return None
+
+
+def get_n_teams(common_information: CommonInformation) -> int:
+    teams = set(common_information.identity_counts) | set(
+        common_information.agent_sets)
+    if not validate_teams(teams):
+        raise ValueError
+    return max(teams) + 1
