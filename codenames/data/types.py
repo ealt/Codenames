@@ -6,6 +6,8 @@ Team = NewType('Team', int)
 UnknownTeam = 0
 Codename = NewType('Codename', str)
 AgentIdentities = dict[Codename, Team]
+Unlimited = -1
+Pass = ''
 
 # protobuf based test data types
 TeamClueDict = NewType('TeamClueDict', dict[Team, list[Clue]])
@@ -30,10 +32,8 @@ DictData: {
 }
 """
 AgentDict = dict[Team, list[Codename]]
-Unlimited = 'unlimited'
 DictClue = NewType('DictClue', dict[str, str | int])
 TeamDictClueDict = NewType('TeamDictClueDict', dict[Team, list[DictClue]])
-Pass = 'pass_'
 StrAction = NewType('DictAction', str)
 TeamStrActionDict = NewType('TeamStrActionDict', dict[Team, list[StrAction]])
 DictData = NewType('DictData',

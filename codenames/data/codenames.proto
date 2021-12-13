@@ -29,10 +29,7 @@ message CommonInformation {
 
 message Clue {
     string word = 1;
-    oneof quantity {
-        bool unlimited = 2;
-        int32 number = 3;
-    }
+    int32 quantity = 2;
 }
 
 message SharedClue {
@@ -41,10 +38,7 @@ message SharedClue {
 }
 
 message Action {
-    oneof action_type {
-        bool pass_turn = 1;
-        string guess = 2;
-    }
+    string guess = 1;
 }
 
 message ActionOutcome {

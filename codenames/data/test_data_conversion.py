@@ -11,7 +11,7 @@ from codenames.data.types import (AgentDict, AgentIdentities, Codename,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
                                   TeamDictClueDict, TeamSharedActionDict,
                                   TeamSharedClueDict, TeamStrActionDict,
-                                  UnknownTeam, Unlimited)
+                                  UnknownTeam)
 
 
 def convert_to_pb(dict_data: DictData) -> TestData:
@@ -104,8 +104,7 @@ def _get_valid_clues(clues: TeamDictClueDict,
 def _get_team_clue_dict(clues: TeamDictClueDict) -> TeamClueDict:
     return {
         team: [
-            Clue(word=clue['word'], unlimited=True) if clue['quantity']
-            == Unlimited else Clue(word=clue['word'], number=clue['quantity'])
+            Clue(word=clue['word'], quantity=clue['quantity'])
             for clue in team_clues
         ] for team, team_clues in clues.items()
     }
@@ -130,10 +129,8 @@ def _get_valid_actions(actions: TeamStrActionDict,
 
 def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
     return {
-        team: [
-            Action(pass_turn=True) if action == Pass else Action(guess=action)
-            for action in team_actions
-        ] for team, team_actions in actions.items()
+        team: [Action(guess=action) for action in team_actions
+              ] for team, team_actions in actions.items()
     }
 
 
@@ -144,7 +141,7 @@ def _get_team_shared_action_dict(
     for team, team_actions in actions.items():
         for action in team_actions:
             shared_action = SharedAction(team=team, action=action)
-            if action.HasField('guess'):
+            if action.guess != Pass:
                 identity = agent_identities.get(action.guess, UnknownTeam)
                 shared_action.action_outcome.identity = identity
             shared_actions[team].append(shared_action)

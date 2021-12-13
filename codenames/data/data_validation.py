@@ -20,12 +20,10 @@ def validate_clue(clue: DictClue,
         return False
     if 'quantity' not in clue:
         return False
-    if isinstance(clue['quantity'], int):
-        if clue['quantity'] < 1:
-            return False
-    elif isinstance(clue['quantity'], str):
-        if clue['quantity'] != Unlimited:
-            return False
+    if not isinstance(clue['quantity'], int):
+        return False
+    if not (clue['quantity'] >= 1 or clue['quantity'] == Unlimited):
+        return False
     return True
 
 
