@@ -24,6 +24,7 @@ message SecretInformation {
 message CommonInformation {
     map<int32, int32> identity_counts = 1;
     map<int32, AgentSet> agent_sets = 2;
+    repeated Turn turn_history = 3;
 }
 
 message Clue {
@@ -54,4 +55,9 @@ message SharedAction {
     int32 team = 1;
     Action action = 2;
     ActionOutcome action_outcome = 3;
+}
+
+message Turn {
+    SharedClue clue = 1;
+    repeated SharedAction actions = 2;
 }
