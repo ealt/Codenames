@@ -5,7 +5,7 @@ from codenames.data.types import (Codename, DictClue, Pass, StrAction, Team,
 
 
 def validate_team(team: Team, n_teams: int = 2) -> bool:
-    return isinstance(team, int) and -1 <= team < n_teams
+    return isinstance(team, int) and -3 <= team < n_teams
 
 
 def validate_codename(codename: Codename) -> bool:
