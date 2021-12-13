@@ -7,7 +7,7 @@ from codenames.data.codenames_pb2 import (Action, Clue, CommonInformation,
 from codenames.data.data_validation import (validate_action, validate_clue,
                                             validate_codename, validate_team)
 from codenames.data.test_data import TestData
-from codenames.data.types import (AgentDict, AgentIdentities, Codename,
+from codenames.data.types import (AgentDict, CodenameIdentities, Codename,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
                                   TeamDictClueDict, TeamSharedActionDict,
                                   TeamSharedClueDict, TeamStrActionDict,
@@ -19,13 +19,13 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         dict_agents = dict_data['agents']
         valid_agents = _get_valid_agents(dict_agents)
         all_codenames = _get_all_codenames(valid_agents)
-        agent_identities = _get_agent_identities(valid_agents)
+        codename_identities = _get_codename_identities(valid_agents)
         secret_information = _get_secret_information(valid_agents)
         common_information = _get_common_information(valid_agents,
                                                      all_codenames)
     else:
         all_codenames: Optional[set[Codename]] = None
-        agent_identities: AgentIdentities = {}
+        codename_identities: CodenameIdentities = {}
         secret_information: SecretInformation = {}
         common_information: CommonInformation = {}
     if 'clues' in dict_data:
@@ -40,7 +40,8 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         dict_actions = dict_data['actions']
         valid_actions = _get_valid_actions(dict_actions, all_codenames)
         actions = _get_team_action_dict(valid_actions)
-        shared_actions = _get_team_shared_action_dict(actions, agent_identities)
+        shared_actions = _get_team_shared_action_dict(actions,
+                                                      codename_identities)
     else:
         actions: TeamActionDict = {}
         shared_actions: TeamSharedActionDict = {}
@@ -84,7 +85,7 @@ def _get_all_codenames(agents: AgentDict) -> list[Codename]:
     return all_codenames
 
 
-def _get_agent_identities(agents: AgentDict) -> AgentIdentities:
+def _get_codename_identities(agents: AgentDict) -> CodenameIdentities:
     return {
         codename: team for team, codenames in agents.items()
         for codename in codenames
@@ -136,7 +137,7 @@ def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
 
 def _get_team_shared_action_dict(
         actions: TeamActionDict,
-        agent_identities: AgentIdentities) -> TeamSharedActionDict:
+        agent_identities: CodenameIdentities) -> TeamSharedActionDict:
     shared_actions = defaultdict(list)
     for team, team_actions in actions.items():
         for action in team_actions:

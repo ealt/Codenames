@@ -7,7 +7,7 @@ UnknownTeam = -1
 NeutralTeam = -2
 AssassinTeam = -3
 Codename = NewType('Codename', str)
-AgentIdentities = dict[Codename, Team]
+CodenameIdentities = dict[Codename, Team]
 Unlimited = -1
 Pass = ''
 
