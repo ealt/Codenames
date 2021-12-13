@@ -2,6 +2,8 @@ import abc
 
 from codenames.data.codenames_pb2 import CommonInformation, SharedAction, SharedClue
 from codenames.data.types import Team, UnknownTeam
+from codenames.data.utils import (update_informaiton_with_action,
+                                  update_information_with_clue)
 
 
 class Player(abc.ABC):
@@ -19,7 +21,7 @@ class Player(abc.ABC):
         self._common_information = common_information
 
     def reveal_clue(self, shared_clue: SharedClue) -> None:
-        pass
+        update_information_with_clue(self._common_information, shared_clue)
 
     def reveal_action(self, shared_action: SharedAction) -> None:
-        pass
+        update_informaiton_with_action(self._common_information, shared_action)
