@@ -5,14 +5,14 @@ from codenames.data.types import (Codename, DictClue, NonPlayerTeams, Pass,
 
 
 def validate_teams(teams: set[Team]) -> bool:
-    n_teams = max(teams) + 1
-    player_teams = set(range(n_teams))
+    n_teams = max(teams)
+    player_teams = set(range(1, n_teams + 1))
     all_teams = player_teams | NonPlayerTeams
     return teams.issuperset(player_teams) and teams.issubset(all_teams)
 
 
 def validate_team(team: Team, n_teams: int = 2) -> bool:
-    return isinstance(team, int) and (0 <= team < n_teams or
+    return isinstance(team, int) and (0 < team <= n_teams or
                                       team in NonPlayerTeams)
 
 

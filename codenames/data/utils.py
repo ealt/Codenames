@@ -41,7 +41,7 @@ def get_n_teams(common_information: CommonInformation) -> int:
         common_information.agent_sets)
     if not validate_teams(teams):
         raise ValueError
-    return max(teams) + 1
+    return max(teams)
 
 
 def get_guesses_remaining(common_information: CommonInformation) -> int:
@@ -63,6 +63,6 @@ def get_active_team(common_information: CommonInformation) -> Team:
     guesses_remaining = get_guesses_remaining(common_information)
     if guesses_remaining == 0:
         n_teams = get_n_teams(common_information)
-        return (last_active_team + 1) % n_teams
+        return ((last_active_team + 1) % n_teams) + 1
     else:
         return last_active_team

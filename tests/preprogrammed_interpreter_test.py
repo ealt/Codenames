@@ -8,17 +8,17 @@ from codenames.players.preprogrammed_interpreter import \
 
 TEST_DATA = {
     'agents': {
-        0: ['cat'],
-        1: ['dog'],
+        1: ['cat'],
+        2: ['dog'],
     },
     'clues': {
-        0: [{
+        1: [{
             'word': 'meow',
             'quantity': 1
         }]
     },
     'actions': {
-        0: ['cat', Pass]
+        1: ['cat', Pass]
     },
 }
 
@@ -29,12 +29,12 @@ class PreprogrammedInterpreterTest(unittest.TestCase):
         test_data = convert_to_pb(TEST_DATA)
         self._interpreter = PreprogrammedInterpreter()
         self.assertEqual(self._interpreter.team, UnknownTeam)
-        self._interpreter.set_up(0, test_data.common_information,
-                                 test_data.actions[0])
-        self.assertEqual(self._interpreter.team, 0)
+        self._interpreter.set_up(1, test_data.common_information,
+                                 test_data.actions[1])
+        self.assertEqual(self._interpreter.team, 1)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
-        self._actions = test_data.actions[0]
+        self._actions = test_data.actions[1]
 
     def test_recieve_clue(self) -> None:
         for team_shared_clues in self._shared_clues.values():
