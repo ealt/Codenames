@@ -1,6 +1,7 @@
 import abc
 
-from codenames.data.codenames_pb2 import CommonInformation, SharedAction, SharedClue
+from codenames.data.codenames_pb2 import (CommonInformation, SharedAction,
+                                          SharedClue)
 from codenames.data.types import Team, UnknownTeam
 from codenames.data.utils import (update_informaiton_with_action,
                                   update_information_with_clue)

@@ -1,4 +1,5 @@
-from codenames.data.codenames_pb2 import Clue, CommonInformation, SecretInformation
+from codenames.data.codenames_pb2 import (Clue, CommonInformation,
+                                          SecretInformation)
 from codenames.data.types import Team
 from codenames.players.codemaster import Codemaster
 

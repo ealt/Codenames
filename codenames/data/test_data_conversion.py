@@ -7,7 +7,7 @@ from codenames.data.codenames_pb2 import (Action, Clue, CommonInformation,
 from codenames.data.data_validation import (validate_action, validate_clue,
                                             validate_codename, validate_team)
 from codenames.data.test_data import TestData
-from codenames.data.types import (AgentDict, CodenameIdentities, Codename,
+from codenames.data.types import (AgentDict, Codename, CodenameIdentities,
                                   DictData, Pass, TeamActionDict, TeamClueDict,
                                   TeamDictClueDict, TeamSharedActionDict,
                                   TeamSharedClueDict, TeamStrActionDict,
