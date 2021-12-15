@@ -3,9 +3,9 @@ from typing import NewType
 from codenames.data.codenames_pb2 import Action, Clue, SharedAction, SharedClue
 
 Team = NewType('Team', int)
-UnknownTeam = 0
-NeutralTeam = -1
-AssassinTeam = -2
+UnknownTeam = Team(0)
+NeutralTeam = Team(-1)
+AssassinTeam = Team(-2)
 NonPlayerTeams = set((UnknownTeam, NeutralTeam, AssassinTeam))
 Codename = NewType('Codename', str)
 CodenameIdentities = dict[Codename, Team]
