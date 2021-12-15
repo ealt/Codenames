@@ -1,12 +1,12 @@
 import unittest
 
 from codenames.data.test_data_conversion import convert_to_pb
-from codenames.data.types import Pass, UnknownTeam
+from codenames.data.types import DictData, Pass, Team, UnknownTeam
 from codenames.data.utils import get_last_action, get_last_clue
 from codenames.players.preprogrammed_interpreter import \
     PreprogrammedInterpreter
 
-TEST_DATA = {
+TEST_DATA = DictData({
     'agents': {
         1: ['cat'],
         2: ['dog'],
@@ -20,7 +20,7 @@ TEST_DATA = {
     'actions': {
         1: ['cat', Pass]
     },
-}
+})
 
 
 class PreprogrammedInterpreterTest(unittest.TestCase):
@@ -29,12 +29,13 @@ class PreprogrammedInterpreterTest(unittest.TestCase):
         test_data = convert_to_pb(TEST_DATA)
         self._interpreter = PreprogrammedInterpreter()
         self.assertEqual(self._interpreter.team, UnknownTeam)
-        self._interpreter.set_up(1, test_data.common_information,
-                                 test_data.actions[1])
-        self.assertEqual(self._interpreter.team, 1)
+        team = Team(1)
+        self._interpreter.set_up(team, test_data.common_information,
+                                 test_data.actions[team])
+        self.assertEqual(self._interpreter.team, team)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
-        self._actions = test_data.actions[1]
+        self._actions = test_data.actions[team]
 
     def test_recieve_clue(self) -> None:
         for team_shared_clues in self._shared_clues.values():

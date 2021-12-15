@@ -1,11 +1,11 @@
 import unittest
 
 from codenames.data.test_data_conversion import convert_to_pb
-from codenames.data.types import UnknownTeam, Unlimited
+from codenames.data.types import DictData, Team, UnknownTeam, Unlimited
 from codenames.data.utils import get_last_action, get_last_clue
 from codenames.players.preprogrammed_codemaster import PreprogrammedCodemaster
 
-TEST_DATA = {
+TEST_DATA = DictData({
     'agents': {
         1: ['cat'],
         2: ['dog'],
@@ -22,7 +22,7 @@ TEST_DATA = {
     'actions': {
         1: ['cat']
     },
-}
+})
 
 
 class PreprogrammedCodemasterTest(unittest.TestCase):
@@ -31,13 +31,14 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
         test_data = convert_to_pb(TEST_DATA)
         self._codemaster = PreprogrammedCodemaster()
         self.assertEqual(self._codemaster.team, UnknownTeam)
-        self._codemaster.set_up(1, test_data.common_information,
+        team = Team(1)
+        self._codemaster.set_up(team, test_data.common_information,
                                 test_data.secret_information,
-                                test_data.clues[1])
-        self.assertEqual(self._codemaster.team, 1)
+                                test_data.clues[team])
+        self.assertEqual(self._codemaster.team, team)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
-        self._clues = test_data.clues[1]
+        self._clues = test_data.clues[team]
 
     def test_recieve_clue(self) -> None:
         for team_shared_clues in self._shared_clues.values():
