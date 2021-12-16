@@ -132,7 +132,7 @@ def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
 def _get_team_shared_action_dict(
         actions: TeamActionDict,
         agent_identities: CodenameIdentities) -> TeamSharedActionDict:
-    shared_actions: TeamSharedActionDict = defaultdict(list)
+    shared_actions = TeamSharedActionDict(defaultdict(list))
     for team, team_actions in actions.items():
         for action in team_actions:
             shared_action = SharedAction(team=team, action=action)
