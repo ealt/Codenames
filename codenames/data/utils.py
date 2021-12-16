@@ -3,7 +3,7 @@ from codenames.data.codenames_pb2 import (
     CommonInformation, SharedAction, SharedClue, Turn
 )
 from codenames.data.data_validation import validate_teams
-from codenames.data.types import Team, UnknownTeam, Unlimited
+from codenames.data.types import Quantity, Team, UnknownTeam, Unlimited
 
 
 def update_information_with_clue(
@@ -52,15 +52,15 @@ def get_n_teams(common_information: CommonInformation) -> int:
     return max(teams)
 
 
-def get_guesses_remaining(common_information: CommonInformation) -> int:
+def get_guesses_remaining(common_information: CommonInformation) -> Quantity:
     last_clue = get_last_clue(common_information)
     if last_clue is None:
-        return 0
+        return Quantity(0)
     clue_guesses = last_clue.quantity
     if clue_guesses == Unlimited:
         return Unlimited
     guesses_made = len(common_information.turn_history[-1].actions)
-    return clue_guesses - guesses_made
+    return Quantity(clue_guesses - guesses_made)
 
 
 def get_active_team(common_information: CommonInformation) -> Team:

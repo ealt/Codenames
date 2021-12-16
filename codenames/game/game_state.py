@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 
 from codenames.data.codenames_pb2 import Role, TeamOutcomes
-from codenames.data.types import CodenameIdentities, IdentityCodenames, Team
+from codenames.data.types import (
+    CodenameIdentities, IdentityCodenames, Quantity, Team
+)
 
 
 @dataclass
@@ -11,4 +13,4 @@ class GameState:
     team_outcomes: TeamOutcomes
     active_team: Team
     active_role: Role
-    guesses_remaining: int
+    guesses_remaining: Quantity
