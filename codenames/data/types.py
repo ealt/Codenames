@@ -39,7 +39,7 @@ DictData: {
 AgentDict = dict[Team, list[Codename]]
 DictClue = NewType('DictClue', dict[str, str | Quantity])
 TeamDictClueDict = NewType('TeamDictClueDict', dict[Team, list[DictClue]])
-StrAction = NewType('DictAction', str)
+StrAction = NewType('StrAction', str)
 TeamStrActionDict = NewType('TeamStrActionDict', dict[Team, list[StrAction]])
 DictData = NewType('DictData',
                    dict[str, AgentDict | TeamDictClueDict | TeamStrActionDict])
