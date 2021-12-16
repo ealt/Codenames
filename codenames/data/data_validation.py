@@ -18,7 +18,7 @@ def validate_codename(codename: Codename) -> bool:
     return isinstance(codename, str)
 
 
-def validate_clue(clue: DictClue, codenames: set[Codename] = None) -> bool:
+def validate_clue(clue: DictClue, codenames: set[Codename]) -> bool:
     if 'word' not in clue:
         return False
     if clue['word'] in codenames:
