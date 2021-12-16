@@ -16,7 +16,6 @@ class Player(abc.ABC):
     def team(self) -> Team:
         return self._team
 
-    @abc.abstractmethod
     def set_up(self, team: Team, common_information: CommonInformation) -> None:
         self._team = team
         self._common_information = common_information
