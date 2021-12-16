@@ -90,49 +90,49 @@ def _get_codename_identities(agents: AgentDict) -> CodenameIdentities:
 
 def _get_valid_clues(clues: TeamDictClueDict,
                      codenames: set[Codename]) -> TeamDictClueDict:
-    return {
+    return TeamDictClueDict({
         team: [clue for clue in team_clues if validate_clue(clue, codenames)
               ] for team, team_clues in clues.items() if validate_team(team)
-    }
+    })
 
 
 def _get_team_clue_dict(clues: TeamDictClueDict) -> TeamClueDict:
-    return {
+    return TeamClueDict({
         team: [
             Clue(word=clue['word'], quantity=clue['quantity'])
             for clue in team_clues
         ] for team, team_clues in clues.items()
-    }
+    })
 
 
 def _get_team_shared_clue_dict(clues: TeamClueDict) -> TeamSharedClueDict:
-    return {
+    return TeamSharedClueDict({
         team: [SharedClue(team=team, clue=clue) for clue in team_clues
               ] for team, team_clues in clues.items()
-    }
+    })
 
 
 def _get_valid_actions(actions: TeamStrActionDict,
                        codenames: set[Codename]) -> TeamStrActionDict:
-    return {
+    return TeamStrActionDict({
         team: [
             action for action in team_actions
             if validate_action(action, codenames)
         ] for team, team_actions in actions.items() if validate_team(team)
-    }
+    })
 
 
 def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
-    return {
+    return TeamActionDict({
         team: [Action(guess=action) for action in team_actions
               ] for team, team_actions in actions.items()
-    }
+    })
 
 
 def _get_team_shared_action_dict(
         actions: TeamActionDict,
         agent_identities: CodenameIdentities) -> TeamSharedActionDict:
-    shared_actions = defaultdict(list)
+    shared_actions: TeamSharedActionDict = defaultdict(list)
     for team, team_actions in actions.items():
         for action in team_actions:
             shared_action = SharedAction(team=team, action=action)
