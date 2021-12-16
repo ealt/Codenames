@@ -1,12 +1,12 @@
 import unittest
 
 from codenames.data.test_data_conversion import convert_to_pb
-from codenames.data.types import DictData, EndTurn, Team, UnknownTeam
+from codenames.data.types import EndTurn, Team, UnknownTeam
 from codenames.data.utils import get_last_action, get_last_clue
 from codenames.players.preprogrammed_interpreter import \
     PreprogrammedInterpreter
 
-TEST_DATA = DictData({
+TEST_DATA = {
     'agents': {
         1: ['cat'],
         2: ['dog'],
@@ -20,13 +20,13 @@ TEST_DATA = DictData({
     'actions': {
         1: ['cat', EndTurn]
     },
-})
+}
 
 
 class PreprogrammedInterpreterTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        test_data = convert_to_pb(TEST_DATA)
+        test_data = convert_to_pb(TEST_DATA)  # type: ignore
         team = Team(1)
         self._interpreter = PreprogrammedInterpreter(test_data.actions[team])
         self.assertEqual(self._interpreter.team, UnknownTeam)
