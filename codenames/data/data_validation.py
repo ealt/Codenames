@@ -1,4 +1,4 @@
-from codenames.data.types import (Codename, DictClue, NonPlayerTeams, Pass,
+from codenames.data.types import (Codename, DictClue, NonPlayerTeams, EndTurn,
                                   StrAction, Team, Unlimited)
 
 
@@ -35,6 +35,6 @@ def validate_clue(clue: DictClue, codenames: set[Codename]) -> bool:
 def validate_action(action: StrAction, codenames: set[Codename]) -> bool:
     if not isinstance(action, str):
         return False
-    if codenames and not (action in codenames or action == Pass):
+    if codenames and not (action in codenames or action == EndTurn):
         return False
     return True

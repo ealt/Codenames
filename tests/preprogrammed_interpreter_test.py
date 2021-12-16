@@ -1,7 +1,7 @@
 import unittest
 
 from codenames.data.test_data_conversion import convert_to_pb
-from codenames.data.types import DictData, Pass, Team, UnknownTeam
+from codenames.data.types import DictData, EndTurn, Team, UnknownTeam
 from codenames.data.utils import get_last_action, get_last_clue
 from codenames.players.preprogrammed_interpreter import \
     PreprogrammedInterpreter
@@ -18,7 +18,7 @@ TEST_DATA = DictData({
         }]
     },
     'actions': {
-        1: ['cat', Pass]
+        1: ['cat', EndTurn]
     },
 })
 

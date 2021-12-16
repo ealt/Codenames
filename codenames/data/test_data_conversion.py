@@ -7,10 +7,10 @@ from codenames.data.data_validation import (validate_action, validate_clue,
                                             validate_codename, validate_team)
 from codenames.data.test_data import TestData
 from codenames.data.types import (AgentDict, Codename, CodenameIdentities,
-                                  DictData, Pass, TeamActionDict, TeamClueDict,
-                                  TeamDictClueDict, TeamSharedActionDict,
-                                  TeamSharedClueDict, TeamStrActionDict,
-                                  UnknownTeam)
+                                  DictData, EndTurn, TeamActionDict,
+                                  TeamClueDict, TeamDictClueDict,
+                                  TeamSharedActionDict, TeamSharedClueDict,
+                                  TeamStrActionDict, UnknownTeam)
 
 
 def convert_to_pb(dict_data: DictData) -> TestData:
@@ -136,7 +136,7 @@ def _get_team_shared_action_dict(
     for team, team_actions in actions.items():
         for action in team_actions:
             shared_action = SharedAction(team=team, action=action)
-            if action.guess != Pass:
+            if action.guess != EndTurn:
                 identity = agent_identities.get(action.guess, UnknownTeam)
                 shared_action.action_outcome.identity = identity
             shared_actions[team].append(shared_action)

@@ -11,7 +11,7 @@ Codename = NewType('Codename', str)
 CodenameIdentities = dict[Codename, Team]
 IdentityCodenames = dict[Team, set[Codename]]
 Unlimited = -1
-Pass = ''
+EndTurn = ''
 
 # protobuf based test data types
 TeamClueDict = NewType('TeamClueDict', dict[Team, list[Clue]])
@@ -27,7 +27,7 @@ DictClue: {
     'quantity': int | Unlimited
 }
 
-StrAction: Codename | Pass
+StrAction: Codename | EndTurn
 
 DictData: {
     'agents': AgentDict,
