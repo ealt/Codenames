@@ -15,6 +15,14 @@ from codenames.data.types import (AgentDict, Codename, CodenameIdentities,
 
 
 def convert_to_pb(dict_data: DictData) -> TestData:
+    all_codenames: Optional[set[Codename]] = None
+    codename_identities: CodenameIdentities = {}
+    secret_information: SecretInformation = {}
+    common_information: CommonInformation = {}
+    clues: TeamClueDict = {}
+    shared_clues: TeamSharedClueDict = {}
+    actions: TeamActionDict = {}
+    shared_actions: TeamSharedActionDict = {}
     if 'agents' in dict_data:
         dict_agents = dict_data['agents']
         valid_agents = _get_valid_agents(dict_agents)
@@ -23,28 +31,17 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         secret_information = _get_secret_information(valid_agents)
         common_information = _get_common_information(valid_agents,
                                                      all_codenames)
-    else:
-        all_codenames: Optional[set[Codename]] = None
-        codename_identities: CodenameIdentities = {}
-        secret_information: SecretInformation = {}
-        common_information: CommonInformation = {}
     if 'clues' in dict_data:
         dict_clues = dict_data['clues']
         valid_clues = _get_valid_clues(dict_clues, all_codenames)
         clues = _get_team_clue_dict(valid_clues)
         shared_clues = _get_team_shared_clue_dict(clues)
-    else:
-        clues: TeamClueDict = {}
-        shared_clues: TeamSharedClueDict = {}
     if 'actions' in dict_data:
         dict_actions = dict_data['actions']
         valid_actions = _get_valid_actions(dict_actions, all_codenames)
         actions = _get_team_action_dict(valid_actions)
         shared_actions = _get_team_shared_action_dict(actions,
                                                       codename_identities)
-    else:
-        actions: TeamActionDict = {}
-        shared_actions: TeamSharedActionDict = {}
     return TestData(secret_information, common_information, clues, shared_clues,
                     actions, shared_actions)
 
