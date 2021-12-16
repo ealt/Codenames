@@ -27,11 +27,10 @@ class PreprogrammedInterpreterTest(unittest.TestCase):
 
     def setUp(self) -> None:
         test_data = convert_to_pb(TEST_DATA)
-        self._interpreter = PreprogrammedInterpreter()
-        self.assertEqual(self._interpreter.team, UnknownTeam)
         team = Team(1)
-        self._interpreter.set_up(team, test_data.common_information,
-                                 test_data.actions[team])
+        self._interpreter = PreprogrammedInterpreter(test_data.actions[team])
+        self.assertEqual(self._interpreter.team, UnknownTeam)
+        self._interpreter.set_up(team, test_data.common_information)
         self.assertEqual(self._interpreter.team, team)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
