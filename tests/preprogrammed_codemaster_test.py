@@ -29,12 +29,11 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
 
     def setUp(self) -> None:
         test_data = convert_to_pb(TEST_DATA)
-        self._codemaster = PreprogrammedCodemaster()
-        self.assertEqual(self._codemaster.team, UnknownTeam)
         team = Team(1)
+        self._codemaster = PreprogrammedCodemaster(test_data.clues[team])
+        self.assertEqual(self._codemaster.team, UnknownTeam)
         self._codemaster.set_up(team, test_data.common_information,
-                                test_data.secret_information,
-                                test_data.clues[team])
+                                test_data.secret_information)
         self.assertEqual(self._codemaster.team, team)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
