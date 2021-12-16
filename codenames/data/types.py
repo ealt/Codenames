@@ -1,4 +1,4 @@
-from typing import NewType
+from typing import NewType, TypedDict
 
 from codenames.data.codenames_pb2 import Action, Clue, SharedAction, SharedClue
 
@@ -22,24 +22,20 @@ TeamSharedActionDict = NewType('TeamSharedActionDict', dict[Team,
                                                             list[SharedAction]])
 
 # json based test data types
-"""
-DictClue: {
-    'word': str,
-    'quantity': Quantity
-}
-
-StrAction: Codename | EndTurn
-
-DictData: {
-    'agents': AgentDict,
-    'clues': TeamDictClueDict,
-    'actions': TeamStrActionDict
-}
-"""
 AgentDict = dict[Team, list[Codename]]
-DictClue = NewType('DictClue', dict[str, str | Quantity])
+
+
+class DictClue(TypedDict):
+    word: str
+    quantity: Quantity
+
+
 TeamDictClueDict = NewType('TeamDictClueDict', dict[Team, list[DictClue]])
 StrAction = NewType('StrAction', str)
 TeamStrActionDict = NewType('TeamStrActionDict', dict[Team, list[StrAction]])
-DictData = NewType('DictData',
-                   dict[str, AgentDict | TeamDictClueDict | TeamStrActionDict])
+
+
+class DictData(TypedDict):
+    agents: AgentDict
+    clues: TeamDictClueDict
+    actions: TeamStrActionDict
