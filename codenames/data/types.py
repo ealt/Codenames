@@ -10,7 +10,8 @@ NonPlayerTeams = set((UnknownTeam, NeutralTeam, AssassinTeam))
 Codename = NewType('Codename', str)
 CodenameIdentities = dict[Codename, Team]
 IdentityCodenames = dict[Team, set[Codename]]
-Unlimited = -1
+Quantity = NewType('Quantity', int)
+Unlimited = Quantity(-1)
 EndTurn = ''
 
 # protobuf based test data types
@@ -24,7 +25,7 @@ TeamSharedActionDict = NewType('TeamSharedActionDict', dict[Team,
 """
 DictClue: {
     'word': str,
-    'quantity': int | Unlimited
+    'quantity': Quantity
 }
 
 StrAction: Codename | EndTurn
@@ -36,7 +37,7 @@ DictData: {
 }
 """
 AgentDict = dict[Team, list[Codename]]
-DictClue = NewType('DictClue', dict[str, str | int])
+DictClue = NewType('DictClue', dict[str, str | Quantity])
 TeamDictClueDict = NewType('TeamDictClueDict', dict[Team, list[DictClue]])
 StrAction = NewType('DictAction', str)
 TeamStrActionDict = NewType('TeamStrActionDict', dict[Team, list[StrAction]])
