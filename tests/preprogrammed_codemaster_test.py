@@ -32,9 +32,10 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
         team = Team(1)
         self._codemaster = PreprogrammedCodemaster(test_data.clues[team])
         self.assertEqual(self._codemaster.team, UnknownTeam)
-        self._codemaster.set_up(team, test_data.common_information,
-                                test_data.secret_information)
+        self._codemaster.set_up(team, test_data.common_information)
         self.assertEqual(self._codemaster.team, team)
+        self._codemaster.reaveal_secret_information(
+            test_data.secret_information)
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
         self._clues = test_data.clues[team]

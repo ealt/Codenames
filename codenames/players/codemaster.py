@@ -13,9 +13,11 @@ class Codemaster(Player):
         return (hasattr(subclass, 'give_clue') and
                 (callable(subclass.give_clue) or NotImplemented))
 
-    def set_up(self, team: Team, common_information: CommonInformation,
-               secret_information: SecretInformation):
+    def set_up(self, team: Team, common_information: CommonInformation):
         super().set_up(team, common_information)
+
+    def reaveal_secret_information(
+            self, secret_information: SecretInformation) -> None:
         self._secret_information = secret_information
 
     @abc.abstractmethod
