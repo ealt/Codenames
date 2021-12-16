@@ -1,5 +1,4 @@
 from collections import defaultdict
-from typing import Optional
 
 from codenames.data.codenames_pb2 import (Action, Clue, CommonInformation,
                                           SecretInformation, SharedAction,
@@ -15,7 +14,7 @@ from codenames.data.types import (AgentDict, Codename, CodenameIdentities,
 
 
 def convert_to_pb(dict_data: DictData) -> TestData:
-    all_codenames: Optional[set[Codename]] = None
+    codenames: set[Codename] = set()
     codename_identities = CodenameIdentities({})
     secret_information = SecretInformation()
     common_information = CommonInformation()
@@ -26,19 +25,18 @@ def convert_to_pb(dict_data: DictData) -> TestData:
     if 'agents' in dict_data:
         dict_agents = dict_data['agents']
         valid_agents = _get_valid_agents(dict_agents)
-        all_codenames = _get_all_codenames(valid_agents)
+        codenames = _get_codenames(valid_agents)
         codename_identities = _get_codename_identities(valid_agents)
         secret_information = _get_secret_information(valid_agents)
-        common_information = _get_common_information(valid_agents,
-                                                     all_codenames)
+        common_information = _get_common_information(valid_agents, codenames)
     if 'clues' in dict_data:
         dict_clues = dict_data['clues']
-        valid_clues = _get_valid_clues(dict_clues, all_codenames)
+        valid_clues = _get_valid_clues(dict_clues, codenames)
         clues = _get_team_clue_dict(valid_clues)
         shared_clues = _get_team_shared_clue_dict(clues)
     if 'actions' in dict_data:
         dict_actions = dict_data['actions']
-        valid_actions = _get_valid_actions(dict_actions, all_codenames)
+        valid_actions = _get_valid_actions(dict_actions, codenames)
         actions = _get_team_action_dict(valid_actions)
         shared_actions = _get_team_shared_action_dict(actions,
                                                       codename_identities)
@@ -63,23 +61,24 @@ def _get_secret_information(agents: AgentDict) -> SecretInformation:
 
 
 def _get_common_information(agents: AgentDict,
-                            all_codenames: set[Codename]) -> CommonInformation:
+                            codenames: set[Codename]) -> CommonInformation:
     common_information = CommonInformation()
-    for team, codenames in agents.items():
-        common_information.identity_counts[team] = len(codenames)
-    all_codenames = sorted(list(all_codenames))
-    common_information.agent_sets[UnknownTeam].codenames.extend(all_codenames)
+    for team, team_codenames in agents.items():
+        common_information.identity_counts[team] = len(team_codenames)
+    sorted_codenames = sorted(list(codenames))
+    common_information.agent_sets[UnknownTeam].codenames.extend(
+        sorted_codenames)
     return common_information
 
 
-def _get_all_codenames(agents: AgentDict) -> list[Codename]:
-    all_codenames = set()
+def _get_codenames(agents: AgentDict) -> set[Codename]:
+    codenames: set[Codename] = set()
     for team_codenames in agents.values():
-        team_codenames = set(team_codenames)
-        if not all_codenames.isdisjoint(team_codenames):
+        team_codename_set = set(team_codenames)
+        if not codenames.isdisjoint(team_codename_set):
             raise ValueError('codenames must be unique')
-        all_codenames |= team_codenames
-    return all_codenames
+        codenames |= team_codename_set
+    return codenames
 
 
 def _get_codename_identities(agents: AgentDict) -> CodenameIdentities:
@@ -90,12 +89,10 @@ def _get_codename_identities(agents: AgentDict) -> CodenameIdentities:
 
 
 def _get_valid_clues(clues: TeamDictClueDict,
-                     all_codenames: set[Codename]) -> TeamDictClueDict:
+                     codenames: set[Codename]) -> TeamDictClueDict:
     return {
-        team:
-        [clue for clue in team_clues if validate_clue(clue, all_codenames)]
-        for team, team_clues in clues.items()
-        if validate_team(team)
+        team: [clue for clue in team_clues if validate_clue(clue, codenames)
+              ] for team, team_clues in clues.items() if validate_team(team)
     }
 
 
@@ -116,11 +113,11 @@ def _get_team_shared_clue_dict(clues: TeamClueDict) -> TeamSharedClueDict:
 
 
 def _get_valid_actions(actions: TeamStrActionDict,
-                       all_codenames: set[Codename]) -> TeamStrActionDict:
+                       codenames: set[Codename]) -> TeamStrActionDict:
     return {
         team: [
             action for action in team_actions
-            if validate_action(action, all_codenames)
+            if validate_action(action, codenames)
         ] for team, team_actions in actions.items() if validate_team(team)
     }
 
