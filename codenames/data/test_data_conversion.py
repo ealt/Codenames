@@ -16,13 +16,13 @@ from codenames.data.types import (AgentDict, Codename, CodenameIdentities,
 
 def convert_to_pb(dict_data: DictData) -> TestData:
     all_codenames: Optional[set[Codename]] = None
-    codename_identities: CodenameIdentities = {}
-    secret_information: SecretInformation = {}
-    common_information: CommonInformation = {}
-    clues: TeamClueDict = {}
-    shared_clues: TeamSharedClueDict = {}
-    actions: TeamActionDict = {}
-    shared_actions: TeamSharedActionDict = {}
+    codename_identities = CodenameIdentities({})
+    secret_information = SecretInformation()
+    common_information = CommonInformation()
+    clues = TeamClueDict({})
+    shared_clues = TeamSharedClueDict({})
+    actions = TeamActionDict({})
+    shared_actions = TeamSharedActionDict({})
     if 'agents' in dict_data:
         dict_agents = dict_data['agents']
         valid_agents = _get_valid_agents(dict_agents)
