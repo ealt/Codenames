@@ -1,2 +1,15 @@
 [style]
 based_on_style = google
+coalesce_brackets = true
+dedent_closing_brackets = true
+split_arguments_when_comma_terminated = true
+split_before_arithmetic_operator = true
+split_before_bitwise_operator = true
+split_before_dict_set_generator = true
+split_before_dot = true
+split_before_expression_after_opening_paren = true
+split_before_first_argument = true
+split_before_logical_operator = true
+split_penalty_after_opening_bracket = 0
+split_penalty_comprehension = 0
+split_penalty_for_added_line_split = 0

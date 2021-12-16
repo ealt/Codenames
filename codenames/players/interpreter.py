@@ -8,8 +8,10 @@ class Interpreter(Player):
 
     @classmethod
     def __subclasshook__(cls, subclass):
-        return (hasattr(subclass, 'give_guess') and
-                (callable(subclass.give_guess) or NotImplemented))
+        return (
+            hasattr(subclass, 'give_guess')
+            and (callable(subclass.give_guess) or NotImplemented)
+        )
 
     @abc.abstractmethod
     def give_action(self) -> Action:

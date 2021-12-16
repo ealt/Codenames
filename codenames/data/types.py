@@ -18,8 +18,9 @@ EndTurn = ''
 TeamClueDict = NewType('TeamClueDict', dict[Team, list[Clue]])
 TeamSharedClueDict = NewType('TeamSharedClueDict', dict[Team, list[SharedClue]])
 TeamActionDict = NewType('TeamActionDict', dict[Team, list[Action]])
-TeamSharedActionDict = NewType('TeamSharedActionDict', dict[Team,
-                                                            list[SharedAction]])
+TeamSharedActionDict = NewType(
+    'TeamSharedActionDict', dict[Team, list[SharedAction]]
+)
 
 # json based test data types
 AgentDict = dict[Team, list[Codename]]

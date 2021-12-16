@@ -42,7 +42,8 @@ class PreprogrammedInterpreterTest(unittest.TestCase):
                 self._interpreter.reveal_clue(shared_clue)
                 self.assertEqual(
                     get_last_clue(self._interpreter._common_information),
-                    shared_clue)
+                    shared_clue
+                )
 
     def test_reveal_action(self) -> None:
         for team_shared_actions in self._shared_actions.values():
@@ -50,7 +51,8 @@ class PreprogrammedInterpreterTest(unittest.TestCase):
                 self._interpreter.reveal_action(shared_action)
                 self.assertEqual(
                     get_last_action(self._interpreter._common_information),
-                    shared_action)
+                    shared_action
+                )
 
     def test_give_action(self) -> None:
         for expected_action in self._actions:

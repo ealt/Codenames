@@ -1,27 +1,32 @@
 from typing import Optional
-from codenames.data.codenames_pb2 import (CommonInformation, SharedAction,
-                                          SharedClue, Turn)
+from codenames.data.codenames_pb2 import (
+    CommonInformation, SharedAction, SharedClue, Turn
+)
 from codenames.data.data_validation import validate_teams
 from codenames.data.types import Team, UnknownTeam, Unlimited
 
 
-def update_information_with_clue(common_information: CommonInformation,
-                                 shared_clue: SharedClue) -> None:
+def update_information_with_clue(
+    common_information: CommonInformation, shared_clue: SharedClue
+) -> None:
     common_information.turn_history.append(Turn(clue=shared_clue))
 
 
-def update_informaiton_with_action(common_information: CommonInformation,
-                                   shared_action: SharedAction) -> None:
+def update_informaiton_with_action(
+    common_information: CommonInformation, shared_action: SharedAction
+) -> None:
     try:
         common_information.turn_history[-1].actions.append(shared_action)
     except IndexError:
-        update_information_with_clue(common_information,
-                                     SharedClue(team=UnknownTeam))
+        update_information_with_clue(
+            common_information, SharedClue(team=UnknownTeam)
+        )
         update_informaiton_with_action(common_information, shared_action)
 
 
 def get_last_clue(
-        common_information: CommonInformation) -> Optional[SharedClue]:
+    common_information: CommonInformation
+) -> Optional[SharedClue]:
     try:
         return common_information.turn_history[-1].clue
     except IndexError:
@@ -29,7 +34,8 @@ def get_last_clue(
 
 
 def get_last_action(
-        common_information: CommonInformation) -> Optional[SharedAction]:
+    common_information: CommonInformation
+) -> Optional[SharedAction]:
     try:
         return common_information.turn_history[-1].actions[-1]
     except IndexError:
@@ -37,8 +43,10 @@ def get_last_action(
 
 
 def get_n_teams(common_information: CommonInformation) -> int:
-    teams = set(common_information.identity_counts) | set(
-        common_information.agent_sets)
+    teams = (
+        set(common_information.identity_counts)
+        | set(common_information.agent_sets)
+    )
     if not validate_teams(teams):
         raise ValueError
     return max(teams)

@@ -1,16 +1,17 @@
 from collections import defaultdict
 
-from codenames.data.codenames_pb2 import (Action, Clue, CommonInformation,
-                                          SecretInformation, SharedAction,
-                                          SharedClue)
-from codenames.data.data_validation import (validate_action, validate_clue,
-                                            validate_codename, validate_team)
+from codenames.data.codenames_pb2 import (
+    Action, Clue, CommonInformation, SecretInformation, SharedAction, SharedClue
+)
+from codenames.data.data_validation import (
+    validate_action, validate_clue, validate_codename, validate_team
+)
 from codenames.data.test_data import TestData
-from codenames.data.types import (AgentDict, Codename, CodenameIdentities,
-                                  DictData, EndTurn, TeamActionDict,
-                                  TeamClueDict, TeamDictClueDict,
-                                  TeamSharedActionDict, TeamSharedClueDict,
-                                  TeamStrActionDict, UnknownTeam)
+from codenames.data.types import (
+    AgentDict, Codename, CodenameIdentities, DictData, EndTurn, TeamActionDict,
+    TeamClueDict, TeamDictClueDict, TeamSharedActionDict, TeamSharedClueDict,
+    TeamStrActionDict, UnknownTeam
+)
 
 
 def convert_to_pb(dict_data: DictData) -> TestData:
@@ -38,10 +39,17 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         dict_actions = dict_data['actions']
         valid_actions = _get_valid_actions(dict_actions, codenames)
         actions = _get_team_action_dict(valid_actions)
-        shared_actions = _get_team_shared_action_dict(actions,
-                                                      codename_identities)
-    return TestData(secret_information, common_information, clues, shared_clues,
-                    actions, shared_actions)
+        shared_actions = _get_team_shared_action_dict(
+            actions, codename_identities
+        )
+    return TestData(
+        secret_information,
+        common_information,
+        clues,
+        shared_clues,
+        actions,
+        shared_actions,
+    )
 
 
 def _get_valid_agents(agents: AgentDict) -> AgentDict:
@@ -49,7 +57,9 @@ def _get_valid_agents(agents: AgentDict) -> AgentDict:
         team: sorted([
             codename for codename in set(codenames)
             if validate_codename(codename)
-        ]) for team, codenames in agents.items() if validate_team(team)
+        ])
+        for team, codenames in agents.items()
+        if validate_team(team)
     }
 
 
@@ -60,14 +70,16 @@ def _get_secret_information(agents: AgentDict) -> SecretInformation:
     return secret_information
 
 
-def _get_common_information(agents: AgentDict,
-                            codenames: set[Codename]) -> CommonInformation:
+def _get_common_information(
+    agents: AgentDict, codenames: set[Codename]
+) -> CommonInformation:
     common_information = CommonInformation()
     for team, team_codenames in agents.items():
         common_information.identity_counts[team] = len(team_codenames)
     sorted_codenames = sorted(list(codenames))
     common_information.agent_sets[UnknownTeam].codenames.extend(
-        sorted_codenames)
+        sorted_codenames
+    )
     return common_information
 
 
@@ -83,16 +95,18 @@ def _get_codenames(agents: AgentDict) -> set[Codename]:
 
 def _get_codename_identities(agents: AgentDict) -> CodenameIdentities:
     return {
-        codename: team for team, codenames in agents.items()
-        for codename in codenames
+        codename: team
+        for team, codenames in agents.items() for codename in codenames
     }
 
 
-def _get_valid_clues(clues: TeamDictClueDict,
-                     codenames: set[Codename]) -> TeamDictClueDict:
+def _get_valid_clues(
+    clues: TeamDictClueDict, codenames: set[Codename]
+) -> TeamDictClueDict:
     return TeamDictClueDict({
-        team: [clue for clue in team_clues if validate_clue(clue, codenames)
-              ] for team, team_clues in clues.items() if validate_team(team)
+        team: [clue for clue in team_clues if validate_clue(clue, codenames)]
+        for team, team_clues in clues.items()
+        if validate_team(team)
     })
 
 
@@ -101,37 +115,41 @@ def _get_team_clue_dict(clues: TeamDictClueDict) -> TeamClueDict:
         team: [
             Clue(word=clue['word'], quantity=clue['quantity'])
             for clue in team_clues
-        ] for team, team_clues in clues.items()
+        ]
+        for team, team_clues in clues.items()
     })
 
 
 def _get_team_shared_clue_dict(clues: TeamClueDict) -> TeamSharedClueDict:
     return TeamSharedClueDict({
-        team: [SharedClue(team=team, clue=clue) for clue in team_clues
-              ] for team, team_clues in clues.items()
+        team: [SharedClue(team=team, clue=clue) for clue in team_clues]
+        for team, team_clues in clues.items()
     })
 
 
-def _get_valid_actions(actions: TeamStrActionDict,
-                       codenames: set[Codename]) -> TeamStrActionDict:
+def _get_valid_actions(
+    actions: TeamStrActionDict, codenames: set[Codename]
+) -> TeamStrActionDict:
     return TeamStrActionDict({
         team: [
             action for action in team_actions
             if validate_action(action, codenames)
-        ] for team, team_actions in actions.items() if validate_team(team)
+        ]
+        for team, team_actions in actions.items()
+        if validate_team(team)
     })
 
 
 def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
     return TeamActionDict({
-        team: [Action(guess=action) for action in team_actions
-              ] for team, team_actions in actions.items()
+        team: [Action(guess=action) for action in team_actions]
+        for team, team_actions in actions.items()
     })
 
 
 def _get_team_shared_action_dict(
-        actions: TeamActionDict,
-        agent_identities: CodenameIdentities) -> TeamSharedActionDict:
+    actions: TeamActionDict, agent_identities: CodenameIdentities
+) -> TeamSharedActionDict:
     shared_actions = TeamSharedActionDict(defaultdict(list))
     for team, team_actions in actions.items():
         for action in team_actions:

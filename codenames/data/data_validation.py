@@ -1,5 +1,6 @@
-from codenames.data.types import (Codename, DictClue, NonPlayerTeams, EndTurn,
-                                  StrAction, Team, Unlimited)
+from codenames.data.types import (
+    Codename, DictClue, NonPlayerTeams, EndTurn, StrAction, Team, Unlimited
+)
 
 
 def validate_teams(teams: set[Team]) -> bool:
@@ -10,8 +11,10 @@ def validate_teams(teams: set[Team]) -> bool:
 
 
 def validate_team(team: Team, n_teams: int = 2) -> bool:
-    return isinstance(team, int) and (0 < team <= n_teams or
-                                      team in NonPlayerTeams)
+    return (
+        isinstance(team, int)
+        and (0 < team <= n_teams or team in NonPlayerTeams)
+    )
 
 
 def validate_codename(codename: Codename) -> bool:

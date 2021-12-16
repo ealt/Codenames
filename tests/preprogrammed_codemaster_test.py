@@ -35,7 +35,8 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
         self._codemaster.set_up(team, test_data.common_information)
         self.assertEqual(self._codemaster.team, team)
         self._codemaster.reaveal_secret_information(
-            test_data.secret_information)
+            test_data.secret_information
+        )
         self._shared_clues = test_data.shared_clues
         self._shared_actions = test_data.shared_actions
         self._clues = test_data.clues[team]
@@ -46,7 +47,8 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
                 self._codemaster.reveal_clue(shared_clue)
                 self.assertEqual(
                     get_last_clue(self._codemaster._common_information),
-                    shared_clue)
+                    shared_clue
+                )
 
     def test_reveal_action(self) -> None:
         for team_shared_actions in self._shared_actions.values():
@@ -54,7 +56,8 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
                 self._codemaster.reveal_action(shared_action)
                 self.assertEqual(
                     get_last_action(self._codemaster._common_information),
-                    shared_action)
+                    shared_action
+                )
 
     def test_give_clue(self) -> None:
         for expected_clue in self._clues:
