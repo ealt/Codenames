@@ -9,6 +9,7 @@ AssassinTeam = Team(-2)
 NonPlayerTeams = set((UnknownTeam, NeutralTeam, AssassinTeam))
 Codename = NewType('Codename', str)
 CodenameIdentities = dict[Codename, Team]
+IdentityCodenames = dict[Team, set[Codename]]
 Unlimited = -1
 Pass = ''
 
