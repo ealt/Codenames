@@ -53,4 +53,4 @@ def _get_next_team(game_state: GameState) -> Team:
     n_teams = len(teams)
     current_index = teams.index(game_state.active_team)
     next_index = (current_index + 1) % n_teams
-    return Team(teams(next_index))
+    return Team(teams[next_index])
