@@ -21,11 +21,24 @@ def resolve_action(game_state: GameState, action: Action) -> None:
 def _resolve_guess(game_state: GameState, guess: Codename) -> None:
     identity = game_state.codename_identities[guess]
     game_state.unknown_agents[identity].remove(guess)
-    if (not game_state.unknown_agents[identity]
-            and identity not in NonPlayerTeams):
+    if identity in NonPlayerTeams:
+        _resolve_non_player_team_guess(game_state, identity)
+    else:
+        _resolve_player_team_guess(game_state, identity)
+
+
+def _resolve_non_player_team_guess(
+    game_state: GameState, identity: Team
+) -> None:
+    if identity == AssassinTeam:
+        _resolve_assassin(game_state)
+    _end_turn(game_state)
+
+
+def _resolve_player_team_guess(game_state: GameState, identity: Team) -> None:
+    if not game_state.unknown_agents[identity]:
         _resolve_found_agents(game_state, identity)
-        _end_turn(game_state)
-    elif identity == game_state.teams.active_team:
+    if identity == game_state.teams.active_team:
         if game_state.guesses_remaining != Unlimited:
             game_state.guesses_remaining = Quantity(
                 game_state.guesses_remaining - 1
@@ -33,8 +46,6 @@ def _resolve_guess(game_state: GameState, guess: Codename) -> None:
         if game_state.guesses_remaining == Quantity(0):
             _end_turn(game_state)
     else:
-        if identity == AssassinTeam:
-            _resolve_assassin(game_state)
         _end_turn(game_state)
 
 
