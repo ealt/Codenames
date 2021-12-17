@@ -7,6 +7,7 @@ Team = NewType('Team', int)
 UnknownTeam = Team(0)
 NeutralTeam = Team(-1)
 AssassinTeam = Team(-2)
+NullTeam = Team(-3)
 NonPlayerTeams = set((UnknownTeam, NeutralTeam, AssassinTeam))
 Codename = NewType('Codename', str)
 CodenameIdentities = dict[Codename, Team]
