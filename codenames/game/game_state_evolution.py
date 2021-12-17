@@ -1,6 +1,6 @@
 from codenames.data.codenames_pb2 import Action, Clue, Role
 from codenames.data.types import (
-    AssassinTeam, EndTurn, Quantity, Team, Unlimited
+    AssassinTeam, Codename, EndTurn, Quantity, Team, Unlimited
 )
 from codenames.game.game_state import GameState
 
@@ -14,8 +14,9 @@ def resolve_action(game_state: GameState, action: Action) -> None:
     if action.guess == EndTurn:
         _end_turn(game_state)
     else:
-        _resolve_identity(game_state, action)
-        identity = game_state.codename_identities[action.guess]
+        codename = Codename(action.guess)
+        identity = game_state.codename_identities[codename]
+        game_state.unknown_agents[identity].remove(codename)
         if identity == game_state.active_team:
             if game_state.guesses_remaining != Unlimited:
                 game_state.guesses_remaining = Quantity(
@@ -27,10 +28,6 @@ def resolve_action(game_state: GameState, action: Action) -> None:
             if identity == AssassinTeam:
                 _resolve_assassin(game_state)
             _end_turn(game_state)
-
-
-def _resolve_identity(game_state: GameState, action: Action) -> None:
-    pass
 
 
 def _resolve_assassin(game_state: GameState) -> None:
