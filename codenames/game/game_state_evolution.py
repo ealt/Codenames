@@ -1,5 +1,5 @@
 from codenames.data.codenames_pb2 import Action, Clue, Role
-from codenames.data.types import EndTurn, Quantity, Team
+from codenames.data.types import EndTurn, Quantity, Team, Unlimited
 from codenames.game.game_state import GameState
 
 
@@ -11,6 +11,18 @@ def resolve_clue(game_state: GameState, clue: Clue) -> None:
 def resolve_action(game_state: GameState, action: Action) -> None:
     if action.guess == EndTurn:
         _end_turn(game_state)
+    else:
+        _resolve_identity(game_state, action)
+        if game_state.guesses_remaining != Unlimited:
+            game_state.guesses_remaining = Quantity(
+                game_state.guesses_remaining - 1
+            )
+        if game_state.guesses_remaining == Quantity(0):
+            _end_turn(game_state)
+
+
+def _resolve_identity(game_state: GameState, action: Action) -> None:
+    pass
 
 
 def _end_turn(game_state: GameState) -> None:
