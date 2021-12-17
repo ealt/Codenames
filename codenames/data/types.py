@@ -21,7 +21,6 @@ EndTurn = ''
 class TeamOutcomes:
     found_agents: list[Team] = field(default_factory=list)
     found_assassin: list[Team] = field(default_factory=list)
-    undetermined: list[Team] = field(default_factory=list)
 
 
 # protobuf based test data types

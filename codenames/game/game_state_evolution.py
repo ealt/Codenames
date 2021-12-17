@@ -1,7 +1,6 @@
 from codenames.data.codenames_pb2 import Action, Clue, Role
 from codenames.data.types import (
-    AssassinTeam, Codename, EndTurn, NonPlayerTeams, Quantity, Team,
-    UnknownTeam, Unlimited
+    AssassinTeam, Codename, EndTurn, NonPlayerTeams, Quantity, Team, Unlimited
 )
 from codenames.game.game_state import GameState
 
@@ -22,7 +21,7 @@ def resolve_action(game_state: GameState, action: Action) -> None:
                 and identity not in NonPlayerTeams):
             _resolve_found_agents(game_state, identity)
             _end_turn(game_state)
-        elif identity == game_state.active_team:
+        elif identity == game_state.teams.active_team:
             if game_state.guesses_remaining != Unlimited:
                 game_state.guesses_remaining = Quantity(
                     game_state.guesses_remaining - 1
@@ -44,16 +43,6 @@ def _resolve_assassin(game_state: GameState) -> None:
 
 
 def _end_turn(game_state: GameState) -> None:
-    game_state.active_team = _get_next_team(game_state)
+    _ = next(game_state.teams)
     game_state.active_role = Role.CODEMASTER
     game_state.guesses_remaining = Quantity(0)
-
-
-def _get_next_team(game_state: GameState) -> Team:
-    teams = game_state.team_outcomes.undetermined
-    n_teams = len(teams)
-    if n_teams > 0:
-        current_index = teams.index(game_state.active_team)
-        next_index = (current_index + 1) % n_teams
-        return Team(teams[next_index])
-    return UnknownTeam
