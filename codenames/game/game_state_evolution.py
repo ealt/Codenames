@@ -1,6 +1,7 @@
 from codenames.data.codenames_pb2 import Action, Clue, Role
 from codenames.data.types import (
-    AssassinTeam, Codename, EndTurn, NonPlayerTeams, Quantity, Team, Unlimited
+    AssassinTeam, Codename, EndTurn, NonPlayerTeams, Quantity, Team,
+    UnknownTeam, Unlimited
 )
 from codenames.game.game_state import GameState
 
@@ -51,6 +52,8 @@ def _end_turn(game_state: GameState) -> None:
 def _get_next_team(game_state: GameState) -> Team:
     teams = game_state.team_outcomes.undetermined
     n_teams = len(teams)
-    current_index = teams.index(game_state.active_team)
-    next_index = (current_index + 1) % n_teams
-    return Team(teams[next_index])
+    if n_teams > 0:
+        current_index = teams.index(game_state.active_team)
+        next_index = (current_index + 1) % n_teams
+        return Team(teams[next_index])
+    return UnknownTeam
