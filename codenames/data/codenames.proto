@@ -55,9 +55,3 @@ message Turn {
     SharedClue clue = 1;
     repeated SharedAction actions = 2;
 }
-
-message TeamOutcomes {
-    repeated int32 undetermined = 1;
-    repeated int32 found_agents = 2;
-    repeated int32 found_assassin = 3;
-}

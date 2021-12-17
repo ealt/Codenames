@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from typing import NewType, TypedDict
 
 from codenames.data.codenames_pb2 import Action, Clue, SharedAction, SharedClue
@@ -13,6 +14,14 @@ IdentityCodenames = dict[Team, set[Codename]]
 Quantity = NewType('Quantity', int)
 Unlimited = Quantity(-1)
 EndTurn = ''
+
+
+@dataclass
+class TeamOutcomes:
+    found_agents: list[Team] = field(default_factory=list)
+    found_assassin: list[Team] = field(default_factory=list)
+    undetermined: list[Team] = field(default_factory=list)
+
 
 # protobuf based test data types
 TeamClueDict = NewType('TeamClueDict', dict[Team, list[Clue]])

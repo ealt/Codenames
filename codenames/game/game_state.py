@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from codenames.data.codenames_pb2 import Role, TeamOutcomes
+from codenames.data.codenames_pb2 import Role
 from codenames.data.types import (
-    CodenameIdentities, IdentityCodenames, Quantity, Team
+    CodenameIdentities, IdentityCodenames, Quantity, Team, TeamOutcomes
 )
 
 
