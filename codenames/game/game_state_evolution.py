@@ -7,7 +7,7 @@ from codenames.game.game_validation import validate_action, validate_clue
 
 
 def resolve_clue(game_state: GameState, clue: Clue) -> None:
-    if not validate_clue(clue):
+    if not validate_clue(game_state, clue):
         raise ValueError
     game_state.guesses_remaining = Quantity(clue.quantity)
     game_state.active_role = Role.INTERPRETER
