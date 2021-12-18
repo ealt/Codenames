@@ -45,7 +45,7 @@ def _resolve_player_team_guess(game_state: GameState, identity: Team) -> None:
 
 
 def _resolve_found_agents(game_state: GameState, team: Team) -> None:
-    pass
+    game_state.team_outcomes.found_agents.append(team)
 
 
 def _resolve_assassin(game_state: GameState) -> None:
