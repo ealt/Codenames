@@ -39,12 +39,7 @@ def _resolve_player_team_guess(game_state: GameState, identity: Team) -> None:
     if not game_state.unknown_agents[identity]:
         _resolve_found_agents(game_state, identity)
     if identity == game_state.teams.active_team:
-        if game_state.guesses_remaining != Unlimited:
-            game_state.guesses_remaining = Quantity(
-                game_state.guesses_remaining - 1
-            )
-        if game_state.guesses_remaining == Quantity(0):
-            _end_turn(game_state)
+        _resolve_successful_guess(game_state)
     else:
         _end_turn(game_state)
 
@@ -55,6 +50,15 @@ def _resolve_found_agents(game_state: GameState, team: Team) -> None:
 
 def _resolve_assassin(game_state: GameState) -> None:
     pass
+
+
+def _resolve_successful_guess(game_state: GameState) -> None:
+    if game_state.guesses_remaining != Unlimited:
+        game_state.guesses_remaining = Quantity(
+            game_state.guesses_remaining - 1
+        )
+    if game_state.guesses_remaining == Quantity(0):
+        _end_turn(game_state)
 
 
 def _end_turn(game_state: GameState) -> None:
