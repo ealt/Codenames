@@ -14,7 +14,7 @@ def resolve_clue(game_state: GameState, clue: Clue) -> None:
 
 
 def resolve_action(game_state: GameState, action: Action) -> None:
-    if not validate_action(action):
+    if not validate_action(game_state, action):
         raise ValueError
     if action.guess == EndTurn:
         _end_turn(game_state)

@@ -1,5 +1,5 @@
 from codenames.data.codenames_pb2 import Action, Clue
-from codenames.data.types import Unlimited
+from codenames.data.types import EndTurn, Unlimited
 from codenames.game.game_state import GameState
 
 
@@ -11,5 +11,8 @@ def validate_clue(game_state: GameState, clue: Clue) -> bool:
     return True
 
 
-def validate_action(action: Action) -> bool:
+def validate_action(game_state: GameState, action: Action) -> bool:
+    if not (action.guess in game_state.codename_identities
+            or action.guess == EndTurn):
+        return False
     return True
