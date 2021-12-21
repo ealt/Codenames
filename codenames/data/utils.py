@@ -24,12 +24,13 @@ def update_information_with_action(
             common_information, SharedClue(team=UnknownTeam)
         )
         update_information_with_action(common_information, shared_action)
-    guess = Codename(shared_action.action.guess)
-    identity = Team(shared_action.action_outcome.identity)
-    if identity != NullTeam:
-        common_information.identity_counts[identity] -= 1
-        common_information.agent_sets[UnknownTeam].remove(guess)
-        common_information.agent_sets[identity].append(guess)
+    else:
+        guess = Codename(shared_action.action.guess)
+        identity = Team(shared_action.action_outcome.identity)
+        if identity != NullTeam:
+            common_information.identity_counts[identity] -= 1
+            common_information.agent_sets[UnknownTeam].codenames.remove(guess)
+            common_information.agent_sets[identity].codenames.append(guess)
 
 
 def get_last_clue(
