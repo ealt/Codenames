@@ -1,9 +1,18 @@
-from codenames.data.codenames_pb2 import Action, Clue, Role
+from codenames.data.codenames_pb2 import Action, Clue, CommonInformation, Role
 from codenames.data.types import (
     AssassinTeam, Codename, EndTurn, NonPlayerTeams, Quantity, Team, Unlimited
 )
 from codenames.game.game_state import GameState
 from codenames.game.game_validation import validate_action, validate_clue
+
+
+def update_state(
+    game_state: GameState, common_information: CommonInformation
+) -> None:
+    for turn in common_information.turn_history:
+        resolve_clue(game_state, turn.clue.clue)
+        for action in turn.actions:
+            resolve_action(game_state, action.action)
 
 
 def resolve_clue(game_state: GameState, clue: Clue) -> None:
