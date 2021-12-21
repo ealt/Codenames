@@ -73,7 +73,7 @@ def get_guesses_remaining(common_information: CommonInformation) -> Quantity:
 
 def get_active_team(common_information: CommonInformation) -> Team:
     last_clue = get_last_clue(common_information)
-    if last_clue is None or last_clue.team == UnknownTeam:
+    if last_clue is None or last_clue.team in (NullTeam, UnknownTeam):
         return UnknownTeam
     last_active_team = last_clue.team
     guesses_remaining = get_guesses_remaining(common_information)
