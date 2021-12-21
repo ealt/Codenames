@@ -14,7 +14,7 @@ def update_information_with_clue(
     common_information.turn_history.append(Turn(clue=shared_clue))
 
 
-def update_informaiton_with_action(
+def update_information_with_action(
     common_information: CommonInformation, shared_action: SharedAction
 ) -> None:
     try:
@@ -23,7 +23,7 @@ def update_informaiton_with_action(
         update_information_with_clue(
             common_information, SharedClue(team=UnknownTeam)
         )
-        update_informaiton_with_action(common_information, shared_action)
+        update_information_with_action(common_information, shared_action)
     guess = Codename(shared_action.action.guess)
     identity = Team(shared_action.action_outcome.identity)
     if identity != NullTeam:
