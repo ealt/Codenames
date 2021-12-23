@@ -1,4 +1,5 @@
 from typing import Optional
+
 from codenames.data.codenames_pb2 import Role, SecretInformation
 from codenames.data.types import (
     CodenameIdentities, IdentityCodenames, NonPlayerTeams, Quantity, Team,

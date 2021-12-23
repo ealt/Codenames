@@ -1,4 +1,5 @@
 from typing import Iterator
+
 from codenames.data.types import NullTeam, Team
 from codenames.game.player_team import PlayerTeam
 

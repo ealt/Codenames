@@ -2,8 +2,8 @@ from codenames.data.codenames_pb2 import (
     ActionOutcome, Role, SharedAction, SharedClue
 )
 from codenames.data.types import EndTurn, NullTeam, Team, UnknownTeam
-from codenames.game.game_state_evolution import resolve_action, resolve_clue
 from codenames.game.game_state import GameState
+from codenames.game.game_state_evolution import resolve_action, resolve_clue
 from codenames.players.team_players import TeamPlayers
 
 

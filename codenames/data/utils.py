@@ -1,4 +1,5 @@
 from typing import Optional
+
 from codenames.data.codenames_pb2 import (
     CommonInformation, SharedAction, SharedClue, Turn
 )
