@@ -1,16 +1,15 @@
 from collections import defaultdict
 
 from codenames.data.codenames_pb2 import (
-    Action, Clue, CommonInformation, SecretInformation, SharedAction, SharedClue
+    CommonInformation, SecretInformation, SharedAction, Turn
 )
 from codenames.data.data_validation import (
     validate_action, validate_clue, validate_codename, validate_team
 )
 from codenames.data.test_data import TestData
 from codenames.data.types import (
-    AgentDict, Codename, CodenameIdentities, DictData, EndTurn, TeamActionDict,
-    TeamClueDict, TeamDictClueDict, TeamSharedActionDict, TeamSharedClueDict,
-    TeamStrActionDict, UnknownTeam
+    AgentDict, Codename, CodenameIdentities, DictData, DictTurn, EndTurn,
+    NullTeam, TeamActionDict, TeamClueDict, UnknownTeam
 )
 
 
@@ -20,9 +19,7 @@ def convert_to_pb(dict_data: DictData) -> TestData:
     secret_information = SecretInformation()
     common_information = CommonInformation()
     clues = TeamClueDict({})
-    shared_clues = TeamSharedClueDict({})
     actions = TeamActionDict({})
-    shared_actions = TeamSharedActionDict({})
     if 'agents' in dict_data:
         dict_agents = dict_data['agents']
         valid_agents = _get_valid_agents(dict_agents)
@@ -30,25 +27,18 @@ def convert_to_pb(dict_data: DictData) -> TestData:
         codename_identities = _get_codename_identities(valid_agents)
         secret_information = _get_secret_information(valid_agents)
         common_information = _get_common_information(valid_agents, codenames)
-    if 'clues' in dict_data:
-        dict_clues = dict_data['clues']
-        valid_clues = _get_valid_clues(dict_clues, codenames)
-        clues = _get_team_clue_dict(valid_clues)
-        shared_clues = _get_team_shared_clue_dict(clues)
-    if 'actions' in dict_data:
-        dict_actions = dict_data['actions']
-        valid_actions = _get_valid_actions(dict_actions, codenames)
-        actions = _get_team_action_dict(valid_actions)
-        shared_actions = _get_team_shared_action_dict(
-            actions, codename_identities
+    if 'turns' in dict_data:
+        turns = dict_data['turns']
+        _update_common_information(
+            common_information, turns, codenames, codename_identities
         )
+        clues = _get_team_clue_dict(common_information)
+        actions = _get_team_action_dict(common_information)
     return TestData(
         secret_information,
         common_information,
         clues,
-        shared_clues,
         actions,
-        shared_actions,
     )
 
 
@@ -100,62 +90,58 @@ def _get_codename_identities(agents: AgentDict) -> CodenameIdentities:
     }
 
 
-def _get_valid_clues(
-    clues: TeamDictClueDict, codenames: set[Codename]
-) -> TeamDictClueDict:
-    return TeamDictClueDict({
-        team: [clue for clue in team_clues if validate_clue(clue, codenames)]
-        for team, team_clues in clues.items()
-        if validate_team(team)
-    })
+def _update_common_information(
+    common_information: CommonInformation,
+    turns: list[DictTurn],
+    codenames: set[Codename],
+    codename_identities: CodenameIdentities,
+) -> None:
+    for dict_turn in turns:
+        team = dict_turn['team']
+        dict_clue = dict_turn['clue']
+        if validate_team(team) and validate_clue(dict_clue, codenames):
+            turn = _get_turn(
+                codenames, codename_identities, dict_turn, team, dict_clue
+            )
+            common_information.turn_history.append(turn)
 
 
-def _get_team_clue_dict(clues: TeamDictClueDict) -> TeamClueDict:
-    return TeamClueDict({
-        team: [
-            Clue(word=clue['word'], quantity=clue['quantity'])
-            for clue in team_clues
-        ]
-        for team, team_clues in clues.items()
-    })
+def _get_turn(codenames, codename_identities, dict_turn, team, dict_clue):
+    turn = Turn()
+    turn.clue.team = team
+    turn.clue.clue.word = dict_clue['word']
+    turn.clue.clue.quantity = dict_clue['quantity']
+    for str_action in dict_turn['actions']:
+        if validate_action(str_action, codenames):
+            action = _get_action(codename_identities, team, str_action)
+            turn.actions.append(action)
+    return turn
 
 
-def _get_team_shared_clue_dict(clues: TeamClueDict) -> TeamSharedClueDict:
-    return TeamSharedClueDict({
-        team: [SharedClue(team=team, clue=clue) for clue in team_clues]
-        for team, team_clues in clues.items()
-    })
+def _get_action(codename_identities, team, str_action):
+    if str_action == EndTurn:
+        identity = NullTeam
+    else:
+        identity = codename_identities.get(str_action, UnknownTeam)
+    action = SharedAction()
+    action.team = team
+    action.action.guess = str_action
+    action.action_outcome.identity = identity
+    return action
 
 
-def _get_valid_actions(
-    actions: TeamStrActionDict, codenames: set[Codename]
-) -> TeamStrActionDict:
-    return TeamStrActionDict({
-        team: [
-            action for action in team_actions
-            if validate_action(action, codenames)
-        ]
-        for team, team_actions in actions.items()
-        if validate_team(team)
-    })
+def _get_team_clue_dict(common_information: CommonInformation) -> TeamClueDict:
+    team_clue_dict = TeamClueDict(defaultdict(list))
+    for turn in common_information.turn_history:
+        team_clue_dict[turn.clue.team].append(turn.clue.clue)
+    return team_clue_dict
 
 
-def _get_team_action_dict(actions: TeamStrActionDict) -> TeamActionDict:
-    return TeamActionDict({
-        team: [Action(guess=action) for action in team_actions]
-        for team, team_actions in actions.items()
-    })
-
-
-def _get_team_shared_action_dict(
-    actions: TeamActionDict, agent_identities: CodenameIdentities
-) -> TeamSharedActionDict:
-    shared_actions = TeamSharedActionDict(defaultdict(list))
-    for team, team_actions in actions.items():
-        for action in team_actions:
-            shared_action = SharedAction(team=team, action=action)
-            if action.guess != EndTurn:
-                identity = agent_identities.get(action.guess, UnknownTeam)
-                shared_action.action_outcome.identity = identity
-            shared_actions[team].append(shared_action)
-    return shared_actions
+def _get_team_action_dict(
+    common_information: CommonInformation
+) -> TeamActionDict:
+    team_action_dict = TeamActionDict(defaultdict(list))
+    for turn in common_information.turn_history:
+        for action in turn.actions:
+            team_action_dict[action.team].append(action.action)
+    return team_action_dict

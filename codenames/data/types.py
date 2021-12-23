@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import NewType, TypedDict
 
-from codenames.data.codenames_pb2 import Action, Clue, SharedAction, SharedClue
+from codenames.data.codenames_pb2 import Action, Clue
 
 Team = NewType('Team', int)
 NullTeam = Team(0)
@@ -25,11 +25,7 @@ class TeamOutcomes:
 
 # protobuf based test data types
 TeamClueDict = NewType('TeamClueDict', dict[Team, list[Clue]])
-TeamSharedClueDict = NewType('TeamSharedClueDict', dict[Team, list[SharedClue]])
 TeamActionDict = NewType('TeamActionDict', dict[Team, list[Action]])
-TeamSharedActionDict = NewType(
-    'TeamSharedActionDict', dict[Team, list[SharedAction]]
-)
 
 # json based test data types
 AgentDict = dict[Team, list[Codename]]
@@ -40,12 +36,15 @@ class DictClue(TypedDict):
     quantity: Quantity
 
 
-TeamDictClueDict = NewType('TeamDictClueDict', dict[Team, list[DictClue]])
 StrAction = NewType('StrAction', str)
-TeamStrActionDict = NewType('TeamStrActionDict', dict[Team, list[StrAction]])
+
+
+class DictTurn(TypedDict):
+    team: Team
+    clue: DictClue
+    actions: list[StrAction]
 
 
 class DictData(TypedDict):
     agents: AgentDict
-    clues: TeamDictClueDict
-    actions: TeamStrActionDict
+    turns: list[DictTurn]

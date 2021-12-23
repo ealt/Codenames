@@ -11,15 +11,14 @@ TEST_DATA = {
         1: ['cat'],
         2: ['dog'],
     },
-    'clues': {
-        1: [{
+    'turns': [{
+        'team': 1,
+        'clue': {
             'word': 'meow',
             'quantity': 1
-        }]
-    },
-    'actions': {
-        1: ['cat', EndTurn]
-    },
+        },
+        'actions': ['cat', EndTurn]
+    }]
 }
 
 
@@ -27,27 +26,27 @@ class PreprogrammedInterpreterTest(unittest.TestCase):
 
     def setUp(self) -> None:
         test_data = convert_to_pb(TEST_DATA)  # type: ignore
+        self._turns = test_data.common_information.turn_history
+        test_data.common_information.ClearField('turn_history')
         team = Team(1)
         self._interpreter = PreprogrammedInterpreter(test_data.actions[team])
         self.assertEqual(self._interpreter.team, UnknownTeam)
         self._interpreter.set_up(team, test_data.common_information)
         self.assertEqual(self._interpreter.team, team)
-        self._shared_clues = test_data.shared_clues
-        self._shared_actions = test_data.shared_actions
         self._actions = test_data.actions[team]
 
     def test_recieve_clue(self) -> None:
-        for team_shared_clues in self._shared_clues.values():
-            for shared_clue in team_shared_clues:
-                self._interpreter.reveal_clue(shared_clue)
-                self.assertEqual(
-                    get_last_clue(self._interpreter._common_information),
-                    shared_clue
-                )
+        for turn in self._turns:
+            shared_clue = turn.clue
+            self._interpreter.reveal_clue(shared_clue)
+            self.assertEqual(
+                get_last_clue(self._interpreter._common_information),
+                shared_clue
+            )
 
     def test_reveal_action(self) -> None:
-        for team_shared_actions in self._shared_actions.values():
-            for shared_action in team_shared_actions:
+        for turn in self._turns:
+            for shared_action in turn.actions:
                 self._interpreter.reveal_action(shared_action)
                 self.assertEqual(
                     get_last_action(self._interpreter._common_information),

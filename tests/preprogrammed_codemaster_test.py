@@ -10,18 +10,21 @@ TEST_DATA = {
         1: ['cat'],
         2: ['dog'],
     },
-    'clues': {
-        1: [{
+    'turns': [{
+        'team': 1,
+        'clue': {
             'word': 'meow',
             'quantity': 1
-        }, {
+        },
+        'actions': ['cat']
+    }, {
+        'team': 1,
+        'clue': {
             'word': 'wiskers',
             'quantity': Unlimited
-        }]
-    },
-    'actions': {
-        1: ['cat']
-    },
+        },
+        'actions': []
+    }]
 }
 
 
@@ -29,6 +32,8 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
 
     def setUp(self) -> None:
         test_data = convert_to_pb(TEST_DATA)  # type: ignore
+        self._turns = test_data.common_information.turn_history
+        test_data.common_information.ClearField('turn_history')
         team = Team(1)
         self._codemaster = PreprogrammedCodemaster(test_data.clues[team])
         self.assertEqual(self._codemaster.team, UnknownTeam)
@@ -37,22 +42,19 @@ class PreprogrammedCodemasterTest(unittest.TestCase):
         self._codemaster.reaveal_secret_information(
             test_data.secret_information
         )
-        self._shared_clues = test_data.shared_clues
-        self._shared_actions = test_data.shared_actions
         self._clues = test_data.clues[team]
 
     def test_recieve_clue(self) -> None:
-        for team_shared_clues in self._shared_clues.values():
-            for shared_clue in team_shared_clues:
-                self._codemaster.reveal_clue(shared_clue)
-                self.assertEqual(
-                    get_last_clue(self._codemaster._common_information),
-                    shared_clue
-                )
+        for turn in self._turns:
+            shared_clue = turn.clue
+            self._codemaster.reveal_clue(shared_clue)
+            self.assertEqual(
+                get_last_clue(self._codemaster._common_information), shared_clue
+            )
 
     def test_reveal_action(self) -> None:
-        for team_shared_actions in self._shared_actions.values():
-            for shared_action in team_shared_actions:
+        for turn in self._turns:
+            for shared_action in turn.actions:
                 self._codemaster.reveal_action(shared_action)
                 self.assertEqual(
                     get_last_action(self._codemaster._common_information),
