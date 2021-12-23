@@ -1,62 +1,122 @@
+import json
 import unittest
 
-from codenames.data.test_data_conversion import convert_to_pb
-from codenames.data.types import EndTurn, Team, UnknownTeam
+from google.protobuf.json_format import Parse
+
+from codenames.data.codenames_pb2 import (
+    Action, CommonInformation, SharedAction, SharedClue
+)
+from codenames.data.types import EndTurn, Team, UnknownTeam, Unlimited
 from codenames.data.utils import get_last_action, get_last_clue
 from codenames.players.preprogrammed_interpreter import \
     PreprogrammedInterpreter
 
-TEST_DATA = {
-    'agents': {
-        1: ['cat'],
-        2: ['dog'],
-    },
-    'turns': [{
-        'team': 1,
-        'clue': {
-            'word': 'meow',
-            'quantity': 1
+COMMON_INFORMATION = Parse(
+    json.dumps({
+        'identity_counts': {
+            1: 1,
+            2: 1
         },
-        'actions': ['cat', EndTurn]
-    }]
-}
+        'agent_sets': {
+            UnknownTeam: {
+                'codenames': ['cat', 'dog']
+            }
+        },
+        'turn_history': []
+    }), CommonInformation()
+)
 
 
 class PreprogrammedInterpreterTest(unittest.TestCase):
 
-    def setUp(self) -> None:
-        test_data = convert_to_pb(TEST_DATA)  # type: ignore
-        self._turns = test_data.common_information.turn_history
-        test_data.common_information.ClearField('turn_history')
-        team = Team(1)
-        self._interpreter = PreprogrammedInterpreter(test_data.actions[team])
-        self.assertEqual(self._interpreter.team, UnknownTeam)
-        self._interpreter.set_up(team, test_data.common_information)
-        self.assertEqual(self._interpreter.team, team)
-        self._actions = test_data.actions[team]
+    def test_set_up(self) -> None:
+        interpreter = PreprogrammedInterpreter([])
+        self.assertEqual(interpreter.team, UnknownTeam)
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        self.assertEqual(interpreter.team, Team(1))
 
-    def test_recieve_clue(self) -> None:
-        for turn in self._turns:
-            shared_clue = turn.clue
-            self._interpreter.reveal_clue(shared_clue)
-            self.assertEqual(
-                get_last_clue(self._interpreter._common_information),
-                shared_clue
-            )
+    def test_reveal_finite_clue(self) -> None:
+        interpreter = PreprogrammedInterpreter([])
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        shared_clue = Parse(
+            json.dumps({
+                'team': 1,
+                'clue': {
+                    'word': 'meow',
+                    'quantity': 1
+                }
+            }), SharedClue()
+        )
+        interpreter.reveal_clue(shared_clue)
+        self.assertEqual(
+            get_last_clue(interpreter._common_information), shared_clue
+        )
 
-    def test_reveal_action(self) -> None:
-        for turn in self._turns:
-            for shared_action in turn.actions:
-                self._interpreter.reveal_action(shared_action)
-                self.assertEqual(
-                    get_last_action(self._interpreter._common_information),
-                    shared_action
-                )
+    def test_reveal_unlimited_clue(self) -> None:
+        interpreter = PreprogrammedInterpreter([])
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        shared_clue = Parse(
+            json.dumps({
+                'team': 1,
+                'clue': {
+                    'word': 'wiskers',
+                    'quantity': Unlimited
+                }
+            }), SharedClue()
+        )
+        interpreter.reveal_clue(shared_clue)
+        self.assertEqual(
+            get_last_clue(interpreter._common_information), shared_clue
+        )
 
-    def test_give_action(self) -> None:
-        for expected_action in self._actions:
-            actual_action = self._interpreter.give_action()
-            self.assertEqual(actual_action, expected_action)
+    def test_reveal_guess(self) -> None:
+        interpreter = PreprogrammedInterpreter([])
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        shared_action = Parse(
+            json.dumps({
+                'team': 1,
+                'action': {
+                    'guess': 'cat'
+                },
+                'action_outcome': {
+                    'identity': 1
+                }
+            }), SharedAction()
+        )
+        interpreter.reveal_action(shared_action)
+        self.assertEqual(
+            get_last_action(interpreter._common_information), shared_action
+        )
+
+    def test_reveal_end_turn(self) -> None:
+        interpreter = PreprogrammedInterpreter([])
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        shared_action = Parse(
+            json.dumps({
+                'team': 1,
+                'action': {
+                    'guess': EndTurn
+                }
+            }), SharedAction()
+        )
+        interpreter.reveal_action(shared_action)
+        self.assertEqual(
+            get_last_action(interpreter._common_information), shared_action
+        )
+
+    def test_give_guess(self) -> None:
+        guess = Parse(json.dumps({'guess': 'cat'}), Action())
+        interpreter = PreprogrammedInterpreter([guess])
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        actual_action = interpreter.give_action()
+        self.assertEqual(actual_action, guess)
+
+    def test_end_turn(self) -> None:
+        end_turn = Parse(json.dumps({'guess': EndTurn}), Action())
+        interpreter = PreprogrammedInterpreter([end_turn])
+        interpreter.set_up(Team(1), COMMON_INFORMATION)
+        actual_action = interpreter.give_action()
+        self.assertEqual(actual_action, end_turn)
 
 
 if __name__ == '__main__':
