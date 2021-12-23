@@ -20,7 +20,8 @@ class Player(abc.ABC):
 
     def set_up(self, team: Team, common_information: CommonInformation) -> None:
         self._team = team
-        self._common_information = common_information
+        self._common_information = CommonInformation()
+        self._common_information.CopyFrom(common_information)
 
     def reveal_clue(self, shared_clue: SharedClue) -> None:
         update_information_with_clue(self._common_information, shared_clue)
