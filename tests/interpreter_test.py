@@ -1,5 +1,5 @@
 import json
-import unittest
+import pytest
 
 from google.protobuf.json_format import Parse
 
@@ -8,6 +8,12 @@ from codenames.data.types import EndTurn, Team, UnknownTeam
 from codenames.players.interpreter import Interpreter
 from tests.preprogrammed_interpreter import \
     PreprogrammedInterpreter
+
+
+def test_abc_init():
+    with pytest.raises(TypeError):
+        _ = Interpreter()
+
 
 COMMON_INFORMATION = Parse(
     json.dumps({
@@ -24,27 +30,13 @@ COMMON_INFORMATION = Parse(
     }), CommonInformation()
 )
 
-
-class InterpreterTest(unittest.TestCase):
-
-    def test_abc_init(self):
-        with self.assertRaises(TypeError):
-            _ = Interpreter()
-
-    def test_give_guess(self) -> None:
-        guess = Parse(json.dumps({'guess': 'cat'}), Action())
-        interpreter = PreprogrammedInterpreter([guess])
-        interpreter.set_up(Team(1), COMMON_INFORMATION)
-        actual_action = interpreter.give_action()
-        self.assertEqual(actual_action, guess)
-
-    def test_end_turn(self) -> None:
-        end_turn = Parse(json.dumps({'guess': EndTurn}), Action())
-        interpreter = PreprogrammedInterpreter([end_turn])
-        interpreter.set_up(Team(1), COMMON_INFORMATION)
-        actual_action = interpreter.give_action()
-        self.assertEqual(actual_action, end_turn)
+GUESS = Parse(json.dumps({'guess': 'cat'}), Action())
+END_TURN = Parse(json.dumps({'guess': EndTurn}), Action())
 
 
-if __name__ == '__main__':
-    unittest.main()
+@pytest.mark.parametrize('action', [GUESS, END_TURN], ids=['guess', 'end_turn'])
+def test_give_action(action) -> None:
+    interpreter = PreprogrammedInterpreter([action])
+    interpreter.set_up(Team(1), COMMON_INFORMATION)
+    actual_action = interpreter.give_action()
+    assert actual_action == action
