@@ -1,5 +1,5 @@
 import json
-import unittest
+import pytest
 
 from google.protobuf.json_format import Parse
 
@@ -26,79 +26,71 @@ COMMON_INFORMATION = Parse(
 )
 
 
-class PlayerTest(unittest.TestCase):
-
-    def test_set_up(self) -> None:
-        player = Player()
-        self.assertEqual(player.team, UnknownTeam)
-        player.set_up(Team(1), COMMON_INFORMATION)
-        self.assertEqual(player.team, Team(1))
-
-    def test_reveal_finite_clue(self) -> None:
-        player = Player()
-        player.set_up(Team(1), COMMON_INFORMATION)
-        shared_clue = Parse(
-            json.dumps({
-                'team': 1,
-                'clue': {
-                    'word': 'meow',
-                    'quantity': 1
-                }
-            }), SharedClue()
-        )
-        player.reveal_clue(shared_clue)
-        self.assertEqual(get_last_clue(player._common_information), shared_clue)
-
-    def test_reveal_unlimited_clue(self) -> None:
-        player = Player()
-        player.set_up(Team(1), COMMON_INFORMATION)
-        shared_clue = Parse(
-            json.dumps({
-                'team': 1,
-                'clue': {
-                    'word': 'wiskers',
-                    'quantity': Unlimited
-                }
-            }), SharedClue()
-        )
-        player.reveal_clue(shared_clue)
-        self.assertEqual(get_last_clue(player._common_information), shared_clue)
-
-    def test_reveal_guess(self) -> None:
-        player = Player()
-        player.set_up(Team(1), COMMON_INFORMATION)
-        shared_action = Parse(
-            json.dumps({
-                'team': 1,
-                'action': {
-                    'guess': 'cat'
-                },
-                'action_outcome': {
-                    'identity': 1
-                }
-            }), SharedAction()
-        )
-        player.reveal_action(shared_action)
-        self.assertEqual(
-            get_last_action(player._common_information), shared_action
-        )
-
-    def test_reveal_end_turn(self) -> None:
-        player = Player()
-        player.set_up(Team(1), COMMON_INFORMATION)
-        shared_action = Parse(
-            json.dumps({
-                'team': 1,
-                'action': {
-                    'guess': EndTurn
-                }
-            }), SharedAction()
-        )
-        player.reveal_action(shared_action)
-        self.assertEqual(
-            get_last_action(player._common_information), shared_action
-        )
+def test_set_up() -> None:
+    player = Player()
+    assert player.team == UnknownTeam
+    player.set_up(Team(1), COMMON_INFORMATION)
+    assert player.team == Team(1)
 
 
-if __name__ == '__main__':
-    unittest.main()
+FINITE_CLUE = Parse(
+    json.dumps({
+        'team': 1,
+        'clue': {
+            'word': 'meow',
+            'quantity': 1
+        }
+    }), SharedClue()
+)
+
+UNLIMITED_CLUE = Parse(
+    json.dumps({
+        'team': 1,
+        'clue': {
+            'word': 'wiskers',
+            'quantity': Unlimited
+        }
+    }), SharedClue()
+)
+
+
+@pytest.mark.parametrize(
+    'shared_clue', [FINITE_CLUE, UNLIMITED_CLUE], ids=['finite', 'unlmited']
+)
+def test_reveal_clue(shared_clue: SharedClue) -> None:
+    player = Player()
+    player.set_up(Team(1), COMMON_INFORMATION)
+    player.reveal_clue(shared_clue)
+    assert get_last_clue(player._common_information) == shared_clue
+
+
+GUESS = Parse(
+    json.dumps({
+        'team': 1,
+        'action': {
+            'guess': 'cat'
+        },
+        'action_outcome': {
+            'identity': 1
+        }
+    }), SharedAction()
+)
+
+END_TURN = Parse(
+    json.dumps({
+        'team': 1,
+        'action': {
+            'guess': EndTurn
+        }
+    }), SharedAction()
+)
+
+
+@pytest.mark.parametrize(
+    'shared_action', [GUESS, END_TURN], ids=['guess', 'end_turn']
+)
+def test_reveal_action(shared_action: SharedAction) -> None:
+    player = Player()
+    player.set_up(Team(1), COMMON_INFORMATION)
+    player.reveal_action(shared_action)
+    assert get_last_action(player._common_information) == shared_action
