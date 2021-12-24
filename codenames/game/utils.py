@@ -9,8 +9,8 @@ from codenames.game.game_state import GameState
 
 
 def get_information(game_state: GameState) -> Information:
+    common_information = _get_common_information(game_state)
     secret_information = _get_secret_information(game_state)
-    common_information = CommonInformation()
     return Information(common=common_information, secret=secret_information)
 
 
@@ -20,4 +20,14 @@ def _get_secret_information(game_state: GameState) -> SecretInformation:
     )
     return Parse(
         json.dumps({'agent_sets': identity_codenames}), SecretInformation()
+    )
+
+
+def _get_common_information(game_state: GameState) -> CommonInformation:
+    return Parse(
+        json.dumps({
+            'identity_counts': {},
+            'agent_sets': {},
+            'turn_history': [],
+        }), CommonInformation()
     )
