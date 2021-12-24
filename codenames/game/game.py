@@ -1,7 +1,7 @@
 from codenames.data.codenames_pb2 import (
     ActionOutcome, Role, SharedAction, SharedClue
 )
-from codenames.data.types import EndTurn, NullTeam, Team, UnknownTeam
+from codenames.data.types import Codename, EndTurn, NullTeam, Team, UnknownTeam
 from codenames.game.game_state import GameState
 from codenames.game.game_state_evolution import resolve_action, resolve_clue
 from codenames.players.team_players import TeamPlayers
@@ -51,7 +51,7 @@ class Game:
         else:
             action_outcome = ActionOutcome(
                 identity=self.game_state.codename_identities
-                .get(action.guess, UnknownTeam)
+                .get(Codename(action.guess), UnknownTeam)
             )
         shared_action = SharedAction(
             team=self._active_team,
