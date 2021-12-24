@@ -15,15 +15,6 @@ def get_information(game_state: GameState) -> Information:
     return Information(common=common_information, secret=secret_information)
 
 
-def _get_secret_information(game_state: GameState) -> SecretInformation:
-    identity_codenames = codename_identities_to_identity_codenames(
-        game_state.codename_identities
-    )
-    return Parse(
-        json.dumps({'agent_sets': identity_codenames}), SecretInformation()
-    )
-
-
 def _get_common_information(game_state: GameState) -> CommonInformation:
     return Parse(
         json.dumps({
@@ -50,3 +41,12 @@ def _get_agent_sets(game_state: GameState) -> dict[Team, list[Codename]]:
         else:
             agent_sets[identity].append(codename)
     return agent_sets
+
+
+def _get_secret_information(game_state: GameState) -> SecretInformation:
+    identity_codenames = codename_identities_to_identity_codenames(
+        game_state.codename_identities
+    )
+    return Parse(
+        json.dumps({'agent_sets': identity_codenames}), SecretInformation()
+    )
