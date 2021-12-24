@@ -6,7 +6,7 @@ from google.protobuf.json_format import Parse
 from codenames.data.codenames_pb2 import Action, CommonInformation
 from codenames.data.types import EndTurn, Team, UnknownTeam
 from codenames.players.interpreter import Interpreter
-from codenames.players.preprogrammed_interpreter import \
+from tests.preprogrammed_interpreter import \
     PreprogrammedInterpreter
 
 COMMON_INFORMATION = Parse(

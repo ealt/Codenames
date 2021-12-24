@@ -8,7 +8,7 @@ from codenames.data.codenames_pb2 import (
 )
 from codenames.data.types import Team, UnknownTeam, Unlimited
 from codenames.players.codemaster import Codemaster
-from codenames.players.preprogrammed_codemaster import PreprogrammedCodemaster
+from tests.preprogrammed_codemaster import PreprogrammedCodemaster
 
 SECRET_INFORMATION = Parse(
     json.dumps({
