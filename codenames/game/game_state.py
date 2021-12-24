@@ -13,5 +13,5 @@ class GameState:
     unknown_agents: IdentityCodenames
     teams: PlayerTeams
     team_outcomes: TeamOutcomes
-    active_role: Role
+    active_role: Role.V
     guesses_remaining: Quantity
