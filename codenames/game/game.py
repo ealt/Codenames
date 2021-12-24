@@ -4,6 +4,7 @@ from codenames.data.codenames_pb2 import (
 from codenames.data.types import Codename, EndTurn, NullTeam, Team, UnknownTeam
 from codenames.game.game_state import GameState
 from codenames.game.game_state_evolution import resolve_action, resolve_clue
+from codenames.game.utils import get_information
 from codenames.players.team_players import TeamPlayers
 
 
@@ -14,6 +15,7 @@ class Game:
     ) -> None:
         self._players = players
         self._game_state = game_state
+        self._set_up_players()
 
     @property
     def game_state(self) -> GameState:
@@ -31,6 +33,15 @@ class Game:
                 self._execute_action_phase()
             else:
                 raise TypeError
+
+    def _set_up_players(self):
+        information = get_information(self.game_state)
+        for team, team_players in self._players.items():
+            team_players.codemaster.set_up(team, information.common)
+            team_players.interpreter.set_up(team, information.common)
+            team_players.codemaster.reaveal_secret_information(
+                information.secret
+            )
 
     def _game_unfinished(self) -> bool:
         return self._active_team != NullTeam
