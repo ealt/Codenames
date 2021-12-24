@@ -29,8 +29,9 @@ def _get_common_information(game_state: GameState) -> CommonInformation:
         json.dumps({
             'identity_counts': _get_identity_counts(game_state),
             'agent_sets': _get_agent_sets(game_state),
-            'turn_history': [],
-        }), CommonInformation()
+            'turn_history': [],  # cannot be completely inferred from game state
+        }),
+        CommonInformation()
     )
 
 
