@@ -7,12 +7,15 @@ NeutralTeam = Team(-1)
 AssassinTeam = Team(-2)
 UnknownTeam = Team(-3)
 NonPlayerTeams = set((UnknownTeam, NeutralTeam, AssassinTeam))
+
 Codename = NewType('Codename', str)
-CodenameIdentities = dict[Codename, Team]
-IdentityCodenames = dict[Team, set[Codename]]
+EndTurn = ''
+
 Quantity = NewType('Quantity', int)
 Unlimited = Quantity(-1)
-EndTurn = ''
+
+CodenameIdentities = dict[Codename, Team]
+IdentityCodenames = dict[Team, set[Codename]]
 
 
 @dataclass
