@@ -11,9 +11,9 @@ from codenames.players.codemaster import Codemaster
 from tests.preprogrammed_codemaster import PreprogrammedCodemaster
 
 
-def test_abc_init():
+def test_abc_init() -> None:
     with pytest.raises(TypeError):
-        _ = Codemaster()
+        _ = Codemaster()  # type: ignore
 
 
 SECRET_INFORMATION = Parse(
@@ -64,7 +64,7 @@ UNLIMITED_CLUE = Parse(
 @pytest.mark.parametrize(
     'clue', [FINITE_CLUE, UNLIMITED_CLUE], ids=['finite', 'unlmited']
 )
-def test_give_clue(clue) -> None:
+def test_give_clue(clue: Clue) -> None:
     codemaster = PreprogrammedCodemaster([clue])
     codemaster.set_up(Team(1), COMMON_INFORMATION)
     actual_clue = codemaster.give_clue()

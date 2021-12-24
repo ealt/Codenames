@@ -10,9 +10,9 @@ from tests.preprogrammed_interpreter import \
     PreprogrammedInterpreter
 
 
-def test_abc_init():
+def test_abc_init() -> None:
     with pytest.raises(TypeError):
-        _ = Interpreter()
+        _ = Interpreter()  # type: ignore
 
 
 COMMON_INFORMATION = Parse(
@@ -35,7 +35,7 @@ END_TURN = Parse(json.dumps({'guess': EndTurn}), Action())
 
 
 @pytest.mark.parametrize('action', [GUESS, END_TURN], ids=['guess', 'end_turn'])
-def test_give_action(action) -> None:
+def test_give_action(action: Action) -> None:
     interpreter = PreprogrammedInterpreter([action])
     interpreter.set_up(Team(1), COMMON_INFORMATION)
     actual_action = interpreter.give_action()
