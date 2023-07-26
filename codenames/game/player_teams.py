@@ -1,6 +1,7 @@
 from typing import Iterator
 
-from codenames.data.types import NullTeam, Team
+from codenames.data.types import NullTeam
+from codenames.data.types import Team
 from codenames.game.player_team import PlayerTeam
 
 
@@ -13,15 +14,16 @@ class PlayerTeams:
             self._init_cyclic_doubly_linked_list(teams)
 
     def _init_cyclic_doubly_linked_list(self, teams: list[Team]) -> None:
-        self._active = PlayerTeam(teams[0])
-        prev = self._active
-        for team in teams[1:]:
-            curr = PlayerTeam(team)
+        if not teams:
+            return
+        player_teams = [PlayerTeam(team) for team in teams]
+        prev = player_teams[-1]
+        for player_team in player_teams:
+            curr = player_team
             prev.next = curr
             curr.prev = prev
             prev = curr
-        curr.next = self._active
-        self._active.prev = curr
+        self._active = prev.next
 
     @property
     def active_team(self) -> Team:
@@ -42,18 +44,18 @@ class PlayerTeams:
         node = self[team]
         node.prev.next = node.next
         node.next.prev = node.prev
-        if node == self._active:
-            self._active = node.next
         self.__len -= 1
         if len(self) == 0:
             self._active = PlayerTeam(NullTeam)
+        elif node == self._active:
+            self._active = node.next
 
     def __iter__(self) -> Iterator[Team]:
         return self
 
     def __next__(self) -> Team:
         self._active = self._active.next
-        return self.active_team
+        return self._active.prev.team
 
     def __contains__(self, team: Team) -> bool:
         try:
