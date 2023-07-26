@@ -1,7 +1,9 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from dataclasses import field
 from typing import NamedTuple, NewType
 
-from codenames.data.codenames_pb2 import CommonInformation, SecretInformation
+from codenames.data.codenames_pb2 import CommonInformation
+from codenames.data.codenames_pb2 import SecretInformation
 
 Team = NewType('Team', int)
 NullTeam = Team(0)

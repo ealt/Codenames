@@ -1,21 +1,25 @@
 from collections import defaultdict
 from typing import Optional
 
-from codenames.data.codenames_pb2 import (
-    CommonInformation, SharedAction, SharedClue, Turn
-)
-from codenames.data.types import (
-    Codename, CodenameIdentities, IdentityCodenames, NullTeam, Team, UnknownTeam
-)
+from codenames.data.codenames_pb2 import CommonInformation
+from codenames.data.codenames_pb2 import SharedAction
+from codenames.data.codenames_pb2 import SharedClue
+from codenames.data.codenames_pb2 import Turn
+from codenames.data.types import Codename
+from codenames.data.types import CodenameIdentities
+from codenames.data.types import IdentityCodenames
+from codenames.data.types import NullTeam
+from codenames.data.types import Team
+from codenames.data.types import UnknownTeam
 
 
 def codename_identities_to_identity_codenames(
     codename_identities: CodenameIdentities
 ) -> IdentityCodenames:
-    identity_codenames = IdentityCodenames(defaultdict(set))
+    identity_codenames = defaultdict(set)
     for codename, identity in codename_identities.items():
         identity_codenames[identity].add(codename)
-    return identity_codenames
+    return IdentityCodenames(identity_codenames)
 
 
 def update_information_with_clue(

@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from codenames.data.codenames_pb2 import Role
-from codenames.data.types import (
-    CodenameIdentities, IdentityCodenames, Quantity, TeamOutcomes
-)
+from codenames.data.types import CodenameIdentities
+from codenames.data.types import IdentityCodenames
+from codenames.data.types import Quantity
+from codenames.data.types import TeamOutcomes
 from codenames.game.player_teams import PlayerTeams
 
 
@@ -13,5 +13,5 @@ class GameState:
     unknown_agents: IdentityCodenames
     teams: PlayerTeams
     team_outcomes: TeamOutcomes
-    active_role: Role.V
+    active_role: int
     guesses_remaining: Quantity

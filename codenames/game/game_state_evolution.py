@@ -1,9 +1,17 @@
-from codenames.data.codenames_pb2 import Action, Clue, CommonInformation, Role
-from codenames.data.types import (
-    AssassinTeam, Codename, EndTurn, NonPlayerTeams, Quantity, Team, Unlimited
-)
+from codenames.data.codenames_pb2 import Action
+from codenames.data.codenames_pb2 import Clue
+from codenames.data.codenames_pb2 import CommonInformation
+from codenames.data.codenames_pb2 import Role
+from codenames.data.types import AssassinTeam
+from codenames.data.types import Codename
+from codenames.data.types import EndTurn
+from codenames.data.types import NonPlayerTeams
+from codenames.data.types import Quantity
+from codenames.data.types import Team
+from codenames.data.types import Unlimited
 from codenames.game.game_state import GameState
-from codenames.game.game_validation import validate_action, validate_clue
+from codenames.game.game_validation import validate_action
+from codenames.game.game_validation import validate_clue
 
 
 def update_state(

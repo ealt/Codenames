@@ -1,10 +1,11 @@
 from collections import defaultdict
-import json
 
-from google.protobuf.json_format import Parse
-
-from codenames.data.codenames_pb2 import CommonInformation, SecretInformation
-from codenames.data.types import Codename, Information, Team, UnknownTeam
+from codenames.data.codenames_pb2 import CommonInformation
+from codenames.data.codenames_pb2 import SecretInformation
+from codenames.data.types import Codename
+from codenames.data.types import Information
+from codenames.data.types import Team
+from codenames.data.types import UnknownTeam
 from codenames.data.utils import codename_identities_to_identity_codenames
 from codenames.game.game_state import GameState
 
@@ -16,14 +17,13 @@ def get_information(game_state: GameState) -> Information:
 
 
 def _get_common_information(game_state: GameState) -> CommonInformation:
-    return Parse(
-        json.dumps({
-            'identity_counts': _get_identity_counts(game_state),
-            'agent_sets': _get_agent_sets(game_state),
-            'turn_history': [],  # cannot be completely inferred from game state
-        }),
-        CommonInformation()
-    )
+    common_information = CommonInformation()
+    for team, count in _get_identity_counts(game_state).items():
+        common_information.identity_counts[team] = count
+    for team, codenames in _get_agent_sets(game_state).items():
+        common_information.agent_sets[team].codenames.extend(codenames)
+    # turn history cannot be completely inferred from game state
+    return common_information
 
 
 def _get_identity_counts(game_state: GameState) -> dict[Team, int]:
@@ -44,9 +44,10 @@ def _get_agent_sets(game_state: GameState) -> dict[Team, list[Codename]]:
 
 
 def _get_secret_information(game_state: GameState) -> SecretInformation:
+    secret_information = SecretInformation()
     identity_codenames = codename_identities_to_identity_codenames(
         game_state.codename_identities
     )
-    return Parse(
-        json.dumps({'agent_sets': identity_codenames}), SecretInformation()
-    )
+    for team, codenames in identity_codenames.items():
+        secret_information.agent_sets[team].codenames.extend(codenames)
+    return secret_information

@@ -1,10 +1,14 @@
 from typing import Optional
 
-from codenames.data.codenames_pb2 import Role, SecretInformation
-from codenames.data.types import (
-    CodenameIdentities, IdentityCodenames, NonPlayerTeams, Quantity, Team,
-    TeamOutcomes
-)
+from codenames.data.codenames_pb2 import Role
+from codenames.data.codenames_pb2 import SecretInformation
+from codenames.data.types import Codename
+from codenames.data.types import CodenameIdentities
+from codenames.data.types import IdentityCodenames
+from codenames.data.types import NonPlayerTeams
+from codenames.data.types import Quantity
+from codenames.data.types import Team
+from codenames.data.types import TeamOutcomes
 from codenames.game.game_state import GameState
 from codenames.game.player_teams import PlayerTeams
 
@@ -34,25 +38,25 @@ def get_game_state(
 def _get_ordered_teams(secret_information: SecretInformation) -> list[Team]:
     all_teams = set(secret_information.agent_sets.keys())
     player_teams = all_teams - NonPlayerTeams
-    return sorted(list(player_teams))
+    return sorted(list(map(Team, player_teams)))
 
 
 def get_codename_identities(
     secret_information: SecretInformation
 ) -> CodenameIdentities:
-    return {
-        codename: team
+    return CodenameIdentities({
+        Codename(codename): Team(team)
         for team, agent_set in secret_information.agent_sets.items()
         for codename in agent_set.codenames
-    }
+    })
 
 
 def _get_unknown_agents(
     secret_information: SecretInformation
 ) -> IdentityCodenames:
     return IdentityCodenames({
-        Team(team): set(agent_set.codenames)
-        for team, agent_set in secret_information.agent_sets
+        Team(team): set(map(Codename, agent_set.codenames))
+        for team, agent_set in secret_information.agent_sets.items()
     })
 
 
