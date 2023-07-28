@@ -1,0 +1,27 @@
+{
+    "identity_codenames": {
+        "1": ["tabby", "siamese", "calico"],
+        "2": ["labrador", "corgi", "husky"]
+    },
+    "turn_history": [
+        {
+            "team": 1,
+            "clue": {"word": "meow", "quantity": 1},
+            "actions": ["tabby"]
+        },
+        {
+            "team": 2,
+            "clue": {"word": "woof", "quantity": 2},
+            "actions": ["corgi", "husky"]
+        },
+        {
+            "team": 1,
+            "clue": {"word": "meow", "quantity": -1},
+            "actions": ["calico", "siamese"]
+        }
+    ],
+    "team_outcomes": {
+        "found_agents": [1],
+        "found_assassin": []
+    }
+}

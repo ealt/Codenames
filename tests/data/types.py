@@ -1,0 +1,7 @@
+Clue = dict[str, str | int]
+Actions = list[str]
+Turn = dict[str, int | Clue | Actions]
+IdentityCodenames = dict[str, list[str]]
+TurnHistory = list[Turn]
+TeamOutcomes = dict[str, list[int]]
+TestData = dict[str, IdentityCodenames | TurnHistory | TeamOutcomes]

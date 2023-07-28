@@ -1,0 +1,22 @@
+{
+    "identity_codenames": {
+        "1": ["cat"],
+        "2": ["dog"]
+    },
+    "turn_history": [
+        {
+            "team": 1,
+            "clue": {"word": "meow", "quantity": 1},
+            "actions": [""]
+        },
+        {
+            "team": 2,
+            "clue": {"word": "woof", "quantity": 1},
+            "actions": ["dog"]
+        }
+    ],
+    "team_outcomes": {
+        "found_agents": [2],
+        "found_assassin": []
+    }
+}
