@@ -2,7 +2,7 @@ INFO:game:1 codemaster: PreprogrammedCodemaster
 INFO:game:1 interpreter: PreprogrammedInterpreter
 INFO:game:2 codemaster: PreprogrammedCodemaster
 INFO:game:2 interpreter: PreprogrammedInterpreter
-INFO:game:Secret information: {2: [dog], 1: [cat], neutral: [bird]}
+INFO:game:Secret information: {neutral: [bird], 1: [cat], 2: [dog]}
 DEBUG:game:Active player: 1 codemaster
 DEBUG:game:Clue given: {word: meow, quantity: 1}
 INFO:game:Shared clue: {team: 1, clue: {word: meow, quantity: 1}}

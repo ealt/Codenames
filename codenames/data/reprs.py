@@ -27,14 +27,15 @@ def snake_to_camel(s: str) -> str:
 
 
 def iterable_repr(it: Iterable) -> str:
-    return '[' + ', '.join(it) + ']'
+    return '[' + ', '.join(sorted(it)) + ']'
 
 
 def mapping_repr(
     m: Mapping, key_func: Callable[[Any], str], val_func: Callable[[Any], str]
 ) -> str:
     return '{' + ', '.join([
-        f'{key_func(k)}: {val_func(v)}' for k, v in m.items()
+        f'{key_func(k)}: {val_func(v)}'
+        for k, v in sorted(m.items(), key=lambda item: item[0])
     ]) + '}'
 
 
