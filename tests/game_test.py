@@ -14,6 +14,9 @@ from codenames.data.types import Team
 from codenames.data.types import TeamOutcomes
 from codenames.game.game import Game
 import codenames.game.game_state_generation as gsg
+from codenames.logging.game_logger import GameLogger
+from codenames.logging.logger_factory import CodeTalkerLoggerFactory
+from codenames.logging.types import LoggingData
 from codenames.players.team_players import TeamPlayers
 from tests.data.types import Actions as JsonActions
 from tests.data.types import Clue as JsonClue
@@ -44,7 +47,10 @@ def test_game(game_name: str) -> None:
     players = _get_players(player_teams, turn_history)
     secret_information = _get_secret_information(identity_codenames)
     game_state = gsg.get_game_state(secret_information, player_teams)
-    game = Game(players, game_state)
+    logging_data = _get_logging_data(game_name)
+    logger_factory = CodeTalkerLoggerFactory(logging_data)
+    game_logger = logger_factory.get_logger(GameLogger)
+    game = Game(players, game_state, game_logger)
     game.play()
     team_outcomes = cast(JsonTeamOutcomes, test_data['team_outcomes'])
     expected_outcomes = _get_team_outcomes(team_outcomes)
@@ -117,6 +123,19 @@ def _get_secret_information(
         team = int(identity)
         secret_information.agent_sets[team].codenames.extend(codenames)
     return secret_information
+
+
+def _get_logging_data(game_name: str) -> LoggingData:
+    return {
+        'path': Path(__file__).resolve().parent / 'logs',
+        'config_mods': {
+            'game': {
+                'filename': f'{game_name}_game.log',
+                'level': 'DEBUG',
+                'mode': 'w',
+            },
+        }
+    }
 
 
 def _get_team_outcomes(team_outcomes: JsonTeamOutcomes) -> TeamOutcomes:

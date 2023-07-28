@@ -1,0 +1,29 @@
+INFO:game:1 codemaster: PreprogrammedCodemaster
+INFO:game:1 interpreter: PreprogrammedInterpreter
+INFO:game:2 codemaster: PreprogrammedCodemaster
+INFO:game:2 interpreter: PreprogrammedInterpreter
+INFO:game:Secret information: {1: [siamese, calico, tabby], 2: [labrador, corgi, husky]}
+DEBUG:game:Active player: 1 codemaster
+DEBUG:game:Clue given: {word: meow, quantity: 1}
+INFO:game:Shared clue: {team: 1, clue: {word: meow, quantity: 1}}
+DEBUG:game:Active player: 1 interpreter
+DEBUG:game:Action given: tabby
+INFO:game:Shared action: {team: 2, action: tabby, outcome: 1}
+DEBUG:game:Active player: 2 codemaster
+DEBUG:game:Clue given: {word: woof, quantity: 2}
+INFO:game:Shared clue: {team: 2, clue: {word: woof, quantity: 2}}
+DEBUG:game:Active player: 2 interpreter
+DEBUG:game:Action given: corgi
+INFO:game:Shared action: {team: 2, action: corgi, outcome: 2}
+DEBUG:game:Active player: 2 interpreter
+DEBUG:game:Action given: husky
+INFO:game:Shared action: {team: 1, action: husky, outcome: 2}
+DEBUG:game:Active player: 1 codemaster
+DEBUG:game:Clue given: {word: meow, quantity: unlimited}
+INFO:game:Shared clue: {team: 1, clue: {word: meow, quantity: unlimited}}
+DEBUG:game:Active player: 1 interpreter
+DEBUG:game:Action given: calico
+INFO:game:Shared action: {team: 1, action: calico, outcome: 1}
+DEBUG:game:Active player: 1 interpreter
+DEBUG:game:Action given: siamese
+INFO:game:Shared action: {team: 2, action: siamese, outcome: 1}

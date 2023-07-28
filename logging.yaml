@@ -1,0 +1,35 @@
+version: 1
+formatters:
+    baseFormatter:
+        class: logging.Formatter
+        format: '%(levelname)s:%(name)s:%(message)s'
+        datefmt: '%Y-%m-%dT%H:%M:%S%z'
+        style: '%'
+        validate: True
+handlers:
+    streamHandler:
+        class: logging.StreamHandler
+        level: INFO
+        formatter: baseFormatter
+        stream: ext://sys.stdout
+    rootFileHandler:
+        class: logging.FileHandler
+        level: INFO
+        formatter: baseFormatter
+        filename: 'root.log'
+        mode: 'a'
+    gameFileHandler:
+        class: logging.FileHandler
+        level: INFO
+        formatter: baseFormatter
+        filename: game.log
+        mode: 'a'
+loggers:
+    game:
+        level: INFO
+        handlers: [gameFileHandler]
+        progagate: 1
+        qualname: 'game'
+    root:
+        level: NOTSET
+        handlers: [rootFileHandler]

@@ -1,0 +1,17 @@
+INFO:game:1 codemaster: PreprogrammedCodemaster
+INFO:game:1 interpreter: PreprogrammedInterpreter
+INFO:game:2 codemaster: PreprogrammedCodemaster
+INFO:game:2 interpreter: PreprogrammedInterpreter
+INFO:game:Secret information: {1: [cat], 2: [dog], neutral: [bird]}
+DEBUG:game:Active player: 1 codemaster
+DEBUG:game:Clue given: {word: meow, quantity: 1}
+INFO:game:Shared clue: {team: 1, clue: {word: meow, quantity: 1}}
+DEBUG:game:Active player: 1 interpreter
+DEBUG:game:Action given: bird
+INFO:game:Shared action: {team: 2, action: bird, outcome: neutral}
+DEBUG:game:Active player: 2 codemaster
+DEBUG:game:Clue given: {word: woof, quantity: 1}
+INFO:game:Shared clue: {team: 2, clue: {word: woof, quantity: 1}}
+DEBUG:game:Active player: 2 interpreter
+DEBUG:game:Action given: dog
+INFO:game:Shared action: {team: 1, action: dog, outcome: 2}
