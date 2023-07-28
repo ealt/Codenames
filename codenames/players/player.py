@@ -26,4 +26,6 @@ class Player(abc.ABC):
         du.update_information_with_clue(self._common_information, shared_clue)
 
     def reveal_action(self, shared_action: SharedAction) -> None:
-        du.update_information_with_action(self._common_information, shared_action)
+        du.update_information_with_action(
+            self._common_information, shared_action
+        )
