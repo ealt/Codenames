@@ -10,8 +10,7 @@ from codenames.data.types import Quantity
 from codenames.data.types import Team
 from codenames.data.types import Unlimited
 from codenames.game.game_state import GameState
-from codenames.game.game_validation import validate_action
-from codenames.game.game_validation import validate_clue
+import codenames.game.game_validation as gv
 
 
 def update_state(
@@ -24,14 +23,14 @@ def update_state(
 
 
 def resolve_clue(game_state: GameState, clue: Clue) -> None:
-    if not validate_clue(game_state, clue):
+    if not gv.validate_clue(game_state, clue):
         raise ValueError
     game_state.guesses_remaining = Quantity(clue.quantity)
     game_state.active_role = Role.INTERPRETER
 
 
 def resolve_action(game_state: GameState, action: Action) -> None:
-    if not validate_action(game_state, action):
+    if not gv.validate_action(game_state, action):
         raise ValueError
     if action.guess == EndTurn:
         _end_turn(game_state)

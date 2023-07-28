@@ -1,6 +1,7 @@
 import abc
 
-from codenames.data.codenames_pb2 import Clue, SecretInformation
+from codenames.data.codenames_pb2 import Clue
+from codenames.data.codenames_pb2 import SecretInformation
 from codenames.players.player import Player
 
 

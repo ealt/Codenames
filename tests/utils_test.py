@@ -11,7 +11,7 @@ from codenames.data.types import TeamOutcomes
 from codenames.data.types import UnknownTeam
 from codenames.game.game_state import GameState
 from codenames.game.player_teams import PlayerTeams
-from codenames.game.utils import get_information
+import codenames.game.utils as gu
 
 SECRET_INFO = SecretInformation()
 SECRET_INFO.agent_sets[1].codenames.extend(['calico', 'siamese', 'tabby'])
@@ -52,7 +52,7 @@ GAME_STATE = GameState(
 
 
 def test_get_setcret_information() -> None:
-    information = get_information(GAME_STATE)
+    information = gu.get_information(GAME_STATE)
     assert set(information.secret.agent_sets.keys()) == set(
         SECRET_INFO.agent_sets.keys()
     )
@@ -63,7 +63,7 @@ def test_get_setcret_information() -> None:
 
 
 def test_get_common_information() -> None:
-    information = get_information(GAME_STATE)
+    information = gu.get_information(GAME_STATE)
     assert information.common.SerializeToString(
         deterministic=True
     ) == COMMON_INFO.SerializeToString(deterministic=True)

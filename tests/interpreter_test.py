@@ -1,13 +1,15 @@
 import json
-import pytest
 
 from google.protobuf.json_format import Parse
+import pytest
 
-from codenames.data.codenames_pb2 import Action, CommonInformation
-from codenames.data.types import EndTurn, Team, UnknownTeam
+from codenames.data.codenames_pb2 import Action
+from codenames.data.codenames_pb2 import CommonInformation
+from codenames.data.types import EndTurn
+from codenames.data.types import Team
+from codenames.data.types import UnknownTeam
 from codenames.players.interpreter import Interpreter
-from tests.preprogrammed_interpreter import \
-    PreprogrammedInterpreter
+from tests.preprogrammed_interpreter import PreprogrammedInterpreter
 
 
 def test_abc_init() -> None:

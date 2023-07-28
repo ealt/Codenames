@@ -6,7 +6,7 @@ from codenames.data.types import Codename
 from codenames.data.types import Information
 from codenames.data.types import Team
 from codenames.data.types import UnknownTeam
-from codenames.data.utils import codename_identities_to_identity_codenames
+import codenames.data.utils as du
 from codenames.game.game_state import GameState
 
 
@@ -45,7 +45,7 @@ def _get_agent_sets(game_state: GameState) -> dict[Team, list[Codename]]:
 
 def _get_secret_information(game_state: GameState) -> SecretInformation:
     secret_information = SecretInformation()
-    identity_codenames = codename_identities_to_identity_codenames(
+    identity_codenames = du.codename_identities_to_identity_codenames(
         game_state.codename_identities
     )
     for team, codenames in identity_codenames.items():
