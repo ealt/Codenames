@@ -1,10 +1,14 @@
-from codenames.data.codenames_pb2 import (
-    ActionOutcome, Role, SharedAction, SharedClue
-)
-from codenames.data.types import Codename, EndTurn, NullTeam, Team, UnknownTeam
+from codenames.data.codenames_pb2 import ActionOutcome
+from codenames.data.codenames_pb2 import Role
+from codenames.data.codenames_pb2 import SharedAction
+from codenames.data.codenames_pb2 import SharedClue
+from codenames.data.types import Codename
+from codenames.data.types import EndTurn
+from codenames.data.types import NullTeam
+from codenames.data.types import Team
 from codenames.game.game_state import GameState
-from codenames.game.game_state_evolution import resolve_action, resolve_clue
-from codenames.game.utils import get_information
+import codenames.game.game_state_evolution as game_state_evolution
+import codenames.game.utils as gu
 from codenames.players.team_players import TeamPlayers
 
 
@@ -26,7 +30,7 @@ class Game:
         return self.game_state.teams.active_team
 
     def play(self) -> None:
-        while self._game_unfinished():
+        while not self._game_finished():
             if self.game_state.active_role == Role.CODEMASTER:
                 self._execute_clue_phase()
             elif self.game_state.active_role == Role.INTERPRETER:
@@ -35,7 +39,7 @@ class Game:
                 raise TypeError
 
     def _set_up_players(self):
-        information = get_information(self.game_state)
+        information = gu.get_information(self.game_state)
         for team, team_players in self._players.items():
             team_players.codemaster.set_up(team, information.common)
             team_players.interpreter.set_up(team, information.common)
@@ -43,12 +47,16 @@ class Game:
                 information.secret
             )
 
-    def _game_unfinished(self) -> bool:
-        return self._active_team != NullTeam
+    def _game_finished(self) -> bool:
+        if len(self.game_state.teams) == 1:
+            return True
+        if self._active_team == NullTeam:
+            return True
+        return False
 
     def _execute_clue_phase(self) -> None:
         clue = self._players[self._active_team].codemaster.give_clue()
-        resolve_clue(self.game_state, clue)
+        game_state_evolution.resolve_clue(self.game_state, clue)
         shared_clue = SharedClue(team=self._active_team, clue=clue)
         for team_players in self._players.values():
             team_players.codemaster.reveal_clue(shared_clue)
@@ -56,14 +64,14 @@ class Game:
 
     def _execute_action_phase(self) -> None:
         action = self._players[self._active_team].interpreter.give_action()
-        resolve_action(self.game_state, action)
+        game_state_evolution.resolve_action(self.game_state, action)
         if action.guess == EndTurn:
             action_outcome = ActionOutcome(identity=NullTeam)
         else:
-            action_outcome = ActionOutcome(
-                identity=self.game_state.codename_identities
-                .get(Codename(action.guess), UnknownTeam)
-            )
+            identity = self.game_state.codename_identities[Codename(
+                action.guess
+            )]
+            action_outcome = ActionOutcome(identity=identity)
         shared_action = SharedAction(
             team=self._active_team,
             action=action,
