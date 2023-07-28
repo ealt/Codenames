@@ -1,8 +1,8 @@
 from codenames.data.codenames_pb2 import Clue
-from codenames.players.codemaster import Codemaster
+from codenames.players.clue_giver import ClueGiver
 
 
-class PreprogrammedCodemaster(Codemaster):
+class PreprogrammedClueGiver(ClueGiver):
 
     def __init__(self, clues: list[Clue]) -> None:
         super().__init__()

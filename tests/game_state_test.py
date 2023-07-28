@@ -45,7 +45,7 @@ GAME_STATE = GameState(
     }),
     teams=PlayerTeams([Team(1), Team(2)]),
     team_outcomes=TeamOutcomes(),
-    active_role=Role.CODEMASTER,
+    active_role=Role.CLUE_GIVER,
     guesses_remaining=Quantity(0)
 )
 

@@ -5,7 +5,7 @@ from codenames.data.codenames_pb2 import SecretInformation
 from codenames.players.player import Player
 
 
-class Codemaster(Player):
+class ClueGiver(Player):
 
     @classmethod
     def __subclasshook__(cls, subclass):

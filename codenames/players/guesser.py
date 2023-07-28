@@ -4,7 +4,7 @@ from codenames.data.codenames_pb2 import Action
 from codenames.players.player import Player
 
 
-class Interpreter(Player):
+class Guesser(Player):
 
     @classmethod
     def __subclasshook__(cls, subclass):

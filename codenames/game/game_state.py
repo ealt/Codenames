@@ -6,10 +6,10 @@ from codenames.data.codenames_pb2 import Clue
 from codenames.data.codenames_pb2 import CommonInformation
 from codenames.data.codenames_pb2 import Role
 from codenames.data.codenames_pb2 import SecretInformation
-from codenames.data.types import AssassinTeam
 from codenames.data.types import Codename
 from codenames.data.types import CodenameIdentities
 from codenames.data.types import EndTurn
+from codenames.data.types import FatalTeam
 from codenames.data.types import IdentityCodenames
 from codenames.data.types import NonPlayerTeams
 from codenames.data.types import Quantity
@@ -48,7 +48,7 @@ class GameState:
         unknown_agents = cls._get_unknown_agents(secret_information)
         teams = PlayerTeams(ordered_teams)
         team_outcomes = cls._get_team_outcomes(ordered_teams, unknown_agents)
-        active_role = Role.CODEMASTER
+        active_role = Role.CLUE_GIVER
         guesses_remaining = Quantity(0)
         return GameState(
             codename_identities,
@@ -134,7 +134,7 @@ class GameState:
         if not self._validate_clue(clue):
             raise ValueError
         self._guesses_remaining = Quantity(clue.quantity)
-        self._active_role = Role.INTERPRETER
+        self._active_role = Role.GUESSER
 
     def resolve_action(self, action: Action) -> None:
         if not self._validate_action(action):
@@ -169,8 +169,8 @@ class GameState:
             self._resolve_player_team_guess(identity)
 
     def _resolve_non_player_team_guess(self, identity: Team) -> None:
-        if identity == AssassinTeam:
-            self._resolve_assassin()
+        if identity == FatalTeam:
+            self._resolve_fatal()
         self._end_turn()
 
     def _resolve_player_team_guess(self, identity: Team) -> None:
@@ -185,10 +185,10 @@ class GameState:
         del self._teams[team]
         self._team_outcomes.found_agents.append(team)
 
-    def _resolve_assassin(self) -> None:
+    def _resolve_fatal(self) -> None:
         team = self._teams.active_team
         del self._teams[team]
-        self._team_outcomes.found_assassin.append(team)
+        self._team_outcomes.found_fatal.append(team)
 
     def _resolve_successful_guess(self) -> None:
         if self._guesses_remaining != Unlimited:
@@ -198,7 +198,7 @@ class GameState:
 
     def _end_turn(self) -> None:
         _ = next(self._teams)
-        self._active_role = Role.CODEMASTER
+        self._active_role = Role.CLUE_GIVER
         self._guesses_remaining = Quantity(0)
 
     def _validate_clue(self, clue: Clue) -> bool:

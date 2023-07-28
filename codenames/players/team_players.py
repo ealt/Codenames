@@ -1,9 +1,9 @@
 from typing import NamedTuple
 
-from codenames.players.codemaster import Codemaster
-from codenames.players.interpreter import Interpreter
+from codenames.players.clue_giver import ClueGiver
+from codenames.players.guesser import Guesser
 
 
 class TeamPlayers(NamedTuple):
-    codemaster: Codemaster
-    interpreter: Interpreter
+    clue_giver: ClueGiver
+    guesser: Guesser

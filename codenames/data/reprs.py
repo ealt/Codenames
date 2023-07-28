@@ -9,8 +9,8 @@ from codenames.data.codenames_pb2 import Role
 from codenames.data.codenames_pb2 import SecretInformation
 from codenames.data.codenames_pb2 import SharedAction
 from codenames.data.codenames_pb2 import SharedClue
-from codenames.data.types import AssassinTeam
 from codenames.data.types import EndTurn
+from codenames.data.types import FatalTeam
 from codenames.data.types import NeutralTeam
 from codenames.data.types import NullTeam
 from codenames.data.types import UnknownTeam
@@ -48,8 +48,8 @@ def identity_repr(identity: int) -> str:
         return 'null team'
     if identity == NeutralTeam:
         return 'neutral'
-    if identity == AssassinTeam:
-        return 'assassin'
+    if identity == FatalTeam:
+        return 'fatal'
     if identity == UnknownTeam:
         return 'unknown'
     return str(identity)

@@ -1,8 +1,8 @@
 from codenames.data.codenames_pb2 import Action
-from codenames.players.interpreter import Interpreter
+from codenames.players.guesser import Guesser
 
 
-class PreprogrammedInterpreter(Interpreter):
+class PreprogrammedGuesser(Guesser):
 
     def __init__(self, actions: list[Action]) -> None:
         super().__init__()

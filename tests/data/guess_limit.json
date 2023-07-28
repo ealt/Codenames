@@ -22,6 +22,6 @@
     ],
     "team_outcomes": {
         "found_agents": [1],
-        "found_assassin": []
+        "found_fatal": []
     }
 }

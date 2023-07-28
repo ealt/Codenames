@@ -24,12 +24,12 @@ from tests.data.types import IdentityCodenames as JsonIdentityCodenames
 from tests.data.types import TeamOutcomes as JsonTeamOutcomes
 from tests.data.types import TestData
 from tests.data.types import TurnHistory as JsonTurnHistory
-from tests.preprogrammed_codemaster import PreprogrammedCodemaster
-from tests.preprogrammed_interpreter import PreprogrammedInterpreter
+from tests.preprogrammed_clue_giver import PreprogrammedClueGiver
+from tests.preprogrammed_guesser import PreprogrammedGuesser
 
 game_names = [
     'found_agents',
-    'found_assassin',
+    'found_fatal',
     'pass',
     'fumble',
     'guess_limit',
@@ -81,8 +81,8 @@ def _get_players(player_teams: list[Team],
     return {
         team:
             TeamPlayers(
-                codemaster=PreprogrammedCodemaster(clues[team]),
-                interpreter=PreprogrammedInterpreter(actions[team])
+                clue_giver=PreprogrammedClueGiver(clues[team]),
+                guesser=PreprogrammedGuesser(actions[team])
             )
         for team in player_teams
     }
@@ -143,5 +143,5 @@ def _get_logging_data(game_name: str) -> LoggingData:
 def _get_team_outcomes(team_outcomes: JsonTeamOutcomes) -> TeamOutcomes:
     return TeamOutcomes(
         found_agents=list(map(Team, team_outcomes['found_agents'])),
-        found_assassin=list(map(Team, team_outcomes['found_assassin']))
+        found_fatal=list(map(Team, team_outcomes['found_fatal']))
     )

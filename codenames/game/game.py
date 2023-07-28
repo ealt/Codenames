@@ -32,9 +32,9 @@ class Game:
             self._logger.log_active_player(
                 self.game_state.active_team, self.game_state.active_role
             )
-            if self.game_state.active_role == Role.CODEMASTER:
+            if self.game_state.active_role == Role.CLUE_GIVER:
                 self._execute_clue_phase()
-            elif self.game_state.active_role == Role.INTERPRETER:
+            elif self.game_state.active_role == Role.GUESSER:
                 self._execute_action_phase()
             else:
                 self._logger.log_invalid_role(self.game_state.active_role)
@@ -45,9 +45,9 @@ class Game:
         secret_information = self.game_state.get_secret_information()
         self._logger.log_secret_information(secret_information)
         for team, team_players in self._players.items():
-            team_players.codemaster.set_up(team, common_information)
-            team_players.interpreter.set_up(team, common_information)
-            team_players.codemaster.reaveal_secret_information(
+            team_players.clue_giver.set_up(team, common_information)
+            team_players.guesser.set_up(team, common_information)
+            team_players.clue_giver.reaveal_secret_information(
                 secret_information
             )
 
@@ -59,19 +59,19 @@ class Game:
         return False
 
     def _execute_clue_phase(self) -> None:
-        codemaster = self._players[self.game_state.active_team].codemaster
-        clue = codemaster.give_clue()
+        clue_giver = self._players[self.game_state.active_team].clue_giver
+        clue = clue_giver.give_clue()
         self._logger.log_clue(clue)
         self.game_state.resolve_clue(clue)
         shared_clue = SharedClue(team=self.game_state.active_team, clue=clue)
         self._logger.log_shared_clue(shared_clue)
         for team_players in self._players.values():
-            team_players.codemaster.reveal_clue(shared_clue)
-            team_players.interpreter.reveal_clue(shared_clue)
+            team_players.clue_giver.reveal_clue(shared_clue)
+            team_players.guesser.reveal_clue(shared_clue)
 
     def _execute_action_phase(self) -> None:
-        interpreter = self._players[self.game_state.active_team].interpreter
-        action = interpreter.give_action()
+        guesser = self._players[self.game_state.active_team].guesser
+        action = guesser.give_action()
         self._logger.log_action(action)
         self.game_state.resolve_action(action)
         if action.guess == EndTurn:
@@ -86,5 +86,5 @@ class Game:
         )
         self._logger.log_shared_action(shared_action)
         for team_players in self._players.values():
-            team_players.codemaster.reveal_action(shared_action)
-            team_players.interpreter.reveal_action(shared_action)
+            team_players.clue_giver.reveal_action(shared_action)
+            team_players.guesser.reveal_action(shared_action)

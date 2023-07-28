@@ -8,13 +8,13 @@ from codenames.data.codenames_pb2 import CommonInformation
 from codenames.data.types import EndTurn
 from codenames.data.types import Team
 from codenames.data.types import UnknownTeam
-from codenames.players.interpreter import Interpreter
-from tests.preprogrammed_interpreter import PreprogrammedInterpreter
+from codenames.players.guesser import Guesser
+from tests.preprogrammed_guesser import PreprogrammedGuesser
 
 
 def test_abc_init() -> None:
     with pytest.raises(TypeError):
-        _ = Interpreter()  # type: ignore
+        _ = Guesser()  # type: ignore
 
 
 COMMON_INFORMATION = Parse(
@@ -38,7 +38,7 @@ END_TURN = Parse(json.dumps({'guess': EndTurn}), Action())
 
 @pytest.mark.parametrize('action', [GUESS, END_TURN], ids=['guess', 'end_turn'])
 def test_give_action(action: Action) -> None:
-    interpreter = PreprogrammedInterpreter([action])
-    interpreter.set_up(Team(1), COMMON_INFORMATION)
-    actual_action = interpreter.give_action()
+    guesser = PreprogrammedGuesser([action])
+    guesser.set_up(Team(1), COMMON_INFORMATION)
+    actual_action = guesser.give_action()
     assert actual_action == action

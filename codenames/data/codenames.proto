@@ -4,8 +4,8 @@ package code_talker;
 
 enum Role {
     UNSPECIFIED_ROLE = 0;
-    CODEMASTER = 1;
-    INTERPRETER = 2;
+    CLUE_GIVER = 1;
+    GUESSER = 2;
 }
 
 message PlayerType {

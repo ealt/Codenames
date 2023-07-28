@@ -9,13 +9,13 @@ from codenames.data.codenames_pb2 import SecretInformation
 from codenames.data.types import Team
 from codenames.data.types import UnknownTeam
 from codenames.data.types import Unlimited
-from codenames.players.codemaster import Codemaster
-from tests.preprogrammed_codemaster import PreprogrammedCodemaster
+from codenames.players.clue_giver import ClueGiver
+from tests.preprogrammed_clue_giver import PreprogrammedClueGiver
 
 
 def test_abc_init() -> None:
     with pytest.raises(TypeError):
-        _ = Codemaster()  # type: ignore
+        _ = ClueGiver()  # type: ignore
 
 
 SECRET_INFORMATION = Parse(
@@ -48,10 +48,10 @@ COMMON_INFORMATION = Parse(
 
 
 def test_reveal_secret_information() -> None:
-    codemaster = PreprogrammedCodemaster([])
-    codemaster.set_up(Team(1), COMMON_INFORMATION)
-    codemaster.reaveal_secret_information(SECRET_INFORMATION)
-    assert codemaster._secret_information == SECRET_INFORMATION
+    clue_giver = PreprogrammedClueGiver([])
+    clue_giver.set_up(Team(1), COMMON_INFORMATION)
+    clue_giver.reaveal_secret_information(SECRET_INFORMATION)
+    assert clue_giver._secret_information == SECRET_INFORMATION
 
 
 FINITE_CLUE = Parse(json.dumps({'word': 'meow', 'quantity': 1}), Clue())
@@ -67,7 +67,7 @@ UNLIMITED_CLUE = Parse(
     'clue', [FINITE_CLUE, UNLIMITED_CLUE], ids=['finite', 'unlmited']
 )
 def test_give_clue(clue: Clue) -> None:
-    codemaster = PreprogrammedCodemaster([clue])
-    codemaster.set_up(Team(1), COMMON_INFORMATION)
-    actual_clue = codemaster.give_clue()
+    clue_giver = PreprogrammedClueGiver([clue])
+    clue_giver.set_up(Team(1), COMMON_INFORMATION)
+    actual_clue = clue_giver.give_clue()
     assert actual_clue == clue

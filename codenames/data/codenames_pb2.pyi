@@ -12,19 +12,27 @@ import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor = ...
 
+
 class Role(_Role, metaclass=_RoleEnumTypeWrapper):
     pass
+
+
 class _Role:
     V = typing.NewType('V', builtins.int)
-class _RoleEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Role.V], builtins.type):
+
+
+class _RoleEnumTypeWrapper(
+        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Role.V],
+        builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor = ...
     UNSPECIFIED_ROLE = Role.V(0)
-    CODEMASTER = Role.V(1)
-    INTERPRETER = Role.V(2)
+    CLUE_GIVER = Role.V(1)
+    GUESSER = Role.V(2)
+
 
 UNSPECIFIED_ROLE = Role.V(0)
-CODEMASTER = Role.V(1)
-INTERPRETER = Role.V(2)
+CLUE_GIVER = Role.V(1)
+GUESSER = Role.V(2)
 global___Role = Role
 
 
@@ -34,100 +42,211 @@ class PlayerType(google.protobuf.message.Message):
     ROLE_FIELD_NUMBER: builtins.int
     team: builtins.int = ...
     role: global___Role.V = ...
-    def __init__(self,
+
+    def __init__(
+        self,
         *,
-        team : builtins.int = ...,
-        role : global___Role.V = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["role",b"role","team",b"team"]) -> None: ...
+        team: builtins.int = ...,
+        role: global___Role.V = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["role", b"role", "team",
+                                                    b"team"]
+    ) -> None:
+        ...
+
+
 global___PlayerType = PlayerType
+
 
 class AgentSet(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CODENAMES_FIELD_NUMBER: builtins.int
+
     @property
-    def codenames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[typing.Text]: ...
-    def __init__(self,
+    def codenames(
+        self
+    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
+            typing.Text]:
+        ...
+
+    def __init__(
+        self,
         *,
-        codenames : typing.Optional[typing.Iterable[typing.Text]] = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["codenames",b"codenames"]) -> None: ...
+        codenames: typing.Optional[typing.Iterable[typing.Text]] = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["codenames", b"codenames"]
+    ) -> None:
+        ...
+
+
 global___AgentSet = AgentSet
+
 
 class SecretInformation(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+
     class AgentSetsEntry(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
         KEY_FIELD_NUMBER: builtins.int
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.int = ...
+
         @property
-        def value(self) -> global___AgentSet: ...
-        def __init__(self,
+        def value(self) -> global___AgentSet:
+            ...
+
+        def __init__(
+            self,
             *,
-            key : builtins.int = ...,
-            value : typing.Optional[global___AgentSet] = ...,
-            ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["value",b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["key",b"key","value",b"value"]) -> None: ...
+            key: builtins.int = ...,
+            value: typing.Optional[global___AgentSet] = ...,
+        ) -> None:
+            ...
+
+        def HasField(
+            self, field_name: typing_extensions.Literal["value", b"value"]
+        ) -> builtins.bool:
+            ...
+
+        def ClearField(
+            self, field_name: typing_extensions.Literal["key", b"key", "value",
+                                                        b"value"]
+        ) -> None:
+            ...
 
     AGENT_SETS_FIELD_NUMBER: builtins.int
+
     @property
-    def agent_sets(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___AgentSet]: ...
-    def __init__(self,
+    def agent_sets(
+        self
+    ) -> google.protobuf.internal.containers.MessageMap[builtins.int,
+                                                        global___AgentSet]:
+        ...
+
+    def __init__(
+        self,
         *,
-        agent_sets : typing.Optional[typing.Mapping[builtins.int, global___AgentSet]] = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["agent_sets",b"agent_sets"]) -> None: ...
+        agent_sets: typing.Optional[typing.Mapping[builtins.int,
+                                                   global___AgentSet]] = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["agent_sets", b"agent_sets"]
+    ) -> None:
+        ...
+
+
 global___SecretInformation = SecretInformation
+
 
 class CommonInformation(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
+
     class IdentityCountsEntry(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
         KEY_FIELD_NUMBER: builtins.int
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.int = ...
         value: builtins.int = ...
-        def __init__(self,
+
+        def __init__(
+            self,
             *,
-            key : builtins.int = ...,
-            value : builtins.int = ...,
-            ) -> None: ...
-        def ClearField(self, field_name: typing_extensions.Literal["key",b"key","value",b"value"]) -> None: ...
+            key: builtins.int = ...,
+            value: builtins.int = ...,
+        ) -> None:
+            ...
+
+        def ClearField(
+            self, field_name: typing_extensions.Literal["key", b"key", "value",
+                                                        b"value"]
+        ) -> None:
+            ...
 
     class AgentSetsEntry(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
         KEY_FIELD_NUMBER: builtins.int
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.int = ...
+
         @property
-        def value(self) -> global___AgentSet: ...
-        def __init__(self,
+        def value(self) -> global___AgentSet:
+            ...
+
+        def __init__(
+            self,
             *,
-            key : builtins.int = ...,
-            value : typing.Optional[global___AgentSet] = ...,
-            ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["value",b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["key",b"key","value",b"value"]) -> None: ...
+            key: builtins.int = ...,
+            value: typing.Optional[global___AgentSet] = ...,
+        ) -> None:
+            ...
+
+        def HasField(
+            self, field_name: typing_extensions.Literal["value", b"value"]
+        ) -> builtins.bool:
+            ...
+
+        def ClearField(
+            self, field_name: typing_extensions.Literal["key", b"key", "value",
+                                                        b"value"]
+        ) -> None:
+            ...
 
     IDENTITY_COUNTS_FIELD_NUMBER: builtins.int
     AGENT_SETS_FIELD_NUMBER: builtins.int
     TURN_HISTORY_FIELD_NUMBER: builtins.int
+
     @property
-    def identity_counts(self) -> google.protobuf.internal.containers.ScalarMap[builtins.int, builtins.int]: ...
+    def identity_counts(
+        self
+    ) -> google.protobuf.internal.containers.ScalarMap[builtins.int,
+                                                       builtins.int]:
+        ...
+
     @property
-    def agent_sets(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___AgentSet]: ...
+    def agent_sets(
+        self
+    ) -> google.protobuf.internal.containers.MessageMap[builtins.int,
+                                                        global___AgentSet]:
+        ...
+
     @property
-    def turn_history(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___Turn]: ...
-    def __init__(self,
+    def turn_history(
+        self
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___Turn]:
+        ...
+
+    def __init__(
+        self,
         *,
-        identity_counts : typing.Optional[typing.Mapping[builtins.int, builtins.int]] = ...,
-        agent_sets : typing.Optional[typing.Mapping[builtins.int, global___AgentSet]] = ...,
-        turn_history : typing.Optional[typing.Iterable[global___Turn]] = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["agent_sets",b"agent_sets","identity_counts",b"identity_counts","turn_history",b"turn_history"]) -> None: ...
+        identity_counts: typing.Optional[typing.Mapping[builtins.int,
+                                                        builtins.int]] = ...,
+        agent_sets: typing.Optional[typing.Mapping[builtins.int,
+                                                   global___AgentSet]] = ...,
+        turn_history: typing.Optional[typing.Iterable[global___Turn]] = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["agent_sets", b"agent_sets",
+                                                    "identity_counts",
+                                                    b"identity_counts",
+                                                    "turn_history",
+                                                    b"turn_history"]
+    ) -> None:
+        ...
+
+
 global___CommonInformation = CommonInformation
+
 
 class Clue(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
@@ -135,51 +254,99 @@ class Clue(google.protobuf.message.Message):
     QUANTITY_FIELD_NUMBER: builtins.int
     word: typing.Text = ...
     quantity: builtins.int = ...
-    def __init__(self,
+
+    def __init__(
+        self,
         *,
-        word : typing.Text = ...,
-        quantity : builtins.int = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["quantity",b"quantity","word",b"word"]) -> None: ...
+        word: typing.Text = ...,
+        quantity: builtins.int = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["quantity", b"quantity",
+                                                    "word", b"word"]
+    ) -> None:
+        ...
+
+
 global___Clue = Clue
+
 
 class SharedClue(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     TEAM_FIELD_NUMBER: builtins.int
     CLUE_FIELD_NUMBER: builtins.int
     team: builtins.int = ...
+
     @property
-    def clue(self) -> global___Clue: ...
-    def __init__(self,
+    def clue(self) -> global___Clue:
+        ...
+
+    def __init__(
+        self,
         *,
-        team : builtins.int = ...,
-        clue : typing.Optional[global___Clue] = ...,
-        ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["clue",b"clue"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["clue",b"clue","team",b"team"]) -> None: ...
+        team: builtins.int = ...,
+        clue: typing.Optional[global___Clue] = ...,
+    ) -> None:
+        ...
+
+    def HasField(
+        self, field_name: typing_extensions.Literal["clue", b"clue"]
+    ) -> builtins.bool:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["clue", b"clue", "team",
+                                                    b"team"]
+    ) -> None:
+        ...
+
+
 global___SharedClue = SharedClue
+
 
 class Action(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     GUESS_FIELD_NUMBER: builtins.int
     guess: typing.Text = ...
-    def __init__(self,
+
+    def __init__(
+        self,
         *,
-        guess : typing.Text = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["guess",b"guess"]) -> None: ...
+        guess: typing.Text = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["guess", b"guess"]
+    ) -> None:
+        ...
+
+
 global___Action = Action
+
 
 class ActionOutcome(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     IDENTITY_FIELD_NUMBER: builtins.int
     identity: builtins.int = ...
-    def __init__(self,
+
+    def __init__(
+        self,
         *,
-        identity : builtins.int = ...,
-        ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["identity",b"identity"]) -> None: ...
+        identity: builtins.int = ...,
+    ) -> None:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["identity", b"identity"]
+    ) -> None:
+        ...
+
+
 global___ActionOutcome = ActionOutcome
+
 
 class SharedAction(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
@@ -187,33 +354,77 @@ class SharedAction(google.protobuf.message.Message):
     ACTION_FIELD_NUMBER: builtins.int
     ACTION_OUTCOME_FIELD_NUMBER: builtins.int
     team: builtins.int = ...
+
     @property
-    def action(self) -> global___Action: ...
+    def action(self) -> global___Action:
+        ...
+
     @property
-    def action_outcome(self) -> global___ActionOutcome: ...
-    def __init__(self,
+    def action_outcome(self) -> global___ActionOutcome:
+        ...
+
+    def __init__(
+        self,
         *,
-        team : builtins.int = ...,
-        action : typing.Optional[global___Action] = ...,
-        action_outcome : typing.Optional[global___ActionOutcome] = ...,
-        ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["action",b"action","action_outcome",b"action_outcome"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["action",b"action","action_outcome",b"action_outcome","team",b"team"]) -> None: ...
+        team: builtins.int = ...,
+        action: typing.Optional[global___Action] = ...,
+        action_outcome: typing.Optional[global___ActionOutcome] = ...,
+    ) -> None:
+        ...
+
+    def HasField(
+        self, field_name: typing_extensions.Literal["action", b"action",
+                                                    "action_outcome",
+                                                    b"action_outcome"]
+    ) -> builtins.bool:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["action", b"action",
+                                                    "action_outcome",
+                                                    b"action_outcome", "team",
+                                                    b"team"]
+    ) -> None:
+        ...
+
+
 global___SharedAction = SharedAction
+
 
 class Turn(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor = ...
     CLUE_FIELD_NUMBER: builtins.int
     ACTIONS_FIELD_NUMBER: builtins.int
+
     @property
-    def clue(self) -> global___SharedClue: ...
+    def clue(self) -> global___SharedClue:
+        ...
+
     @property
-    def actions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___SharedAction]: ...
-    def __init__(self,
+    def actions(
+        self
+    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
+            global___SharedAction]:
+        ...
+
+    def __init__(
+        self,
         *,
-        clue : typing.Optional[global___SharedClue] = ...,
-        actions : typing.Optional[typing.Iterable[global___SharedAction]] = ...,
-        ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["clue",b"clue"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["actions",b"actions","clue",b"clue"]) -> None: ...
+        clue: typing.Optional[global___SharedClue] = ...,
+        actions: typing.Optional[typing.Iterable[global___SharedAction]] = ...,
+    ) -> None:
+        ...
+
+    def HasField(
+        self, field_name: typing_extensions.Literal["clue", b"clue"]
+    ) -> builtins.bool:
+        ...
+
+    def ClearField(
+        self, field_name: typing_extensions.Literal["actions", b"actions",
+                                                    "clue", b"clue"]
+    ) -> None:
+        ...
+
+
 global___Turn = Turn
