@@ -10,7 +10,7 @@ from codenames.data.types import Team
 from codenames.data.types import TeamOutcomes
 from codenames.data.types import UnknownTeam
 from codenames.game.game_state import GameState
-from codenames.game.player_teams import PlayerTeams
+from codenames.game.player_team_list import PlayerTeamList
 
 SECRET_INFO = SecretInformation()
 SECRET_INFO.agent_sets[1].codenames.extend(['calico', 'siamese', 'tabby'])
@@ -43,7 +43,7 @@ GAME_STATE = GameState(
         Team(2): set(map(Codename, ['corgi', 'husky'])),
         NeutralTeam: set([Codename('bird')]),
     }),
-    teams=PlayerTeams([Team(1), Team(2)]),
+    player_teams=PlayerTeamList([Team(1), Team(2)]),
     team_outcomes=TeamOutcomes(),
     active_role=Role.CLUE_GIVER,
     guesses_remaining=Quantity(0)

@@ -18,20 +18,20 @@ from codenames.data.types import TeamOutcomes
 from codenames.data.types import UnknownTeam
 from codenames.data.types import Unlimited
 import codenames.data.utils as du
-from codenames.game.player_teams import PlayerTeams
+from codenames.game.player_team_list import PlayerTeamList
 
 
 class GameState:
 
     def __init__(
         self, codename_identities: CodenameIdentities,
-        unknown_agents: IdentityCodenames, teams: PlayerTeams,
+        unknown_agents: IdentityCodenames, player_teams: PlayerTeamList,
         team_outcomes: TeamOutcomes, active_role: int,
         guesses_remaining: Quantity
     ) -> None:
         self._codename_identities = codename_identities
         self._unknown_agents = unknown_agents
-        self._teams = teams
+        self._player_teams = player_teams
         self._team_outcomes = team_outcomes
         self._active_role = active_role
         self._guesses_remaining = guesses_remaining
@@ -46,14 +46,14 @@ class GameState:
             ordered_teams = cls._get_ordered_teams(secret_information)
         codename_identities = cls._get_codename_identities(secret_information)
         unknown_agents = cls._get_unknown_agents(secret_information)
-        teams = PlayerTeams(ordered_teams)
+        player_teams = PlayerTeamList(ordered_teams)
         team_outcomes = cls._get_team_outcomes(ordered_teams, unknown_agents)
         active_role = Role.CLUE_GIVER
         guesses_remaining = Quantity(0)
         return GameState(
             codename_identities,
             unknown_agents,
-            teams,
+            player_teams,
             team_outcomes,
             active_role,
             guesses_remaining,
@@ -87,21 +87,23 @@ class GameState:
 
     @classmethod
     def _get_team_outcomes(
-        cls, teams: list[Team], unknown_agents: IdentityCodenames
+        cls, player_teams: list[Team], unknown_agents: IdentityCodenames
     ) -> TeamOutcomes:
-        found_agents = [team for team in teams if not unknown_agents[team]]
+        found_agents = [
+            team for team in player_teams if not unknown_agents[team]
+        ]
         return TeamOutcomes(found_agents=found_agents)
 
     @property
     def active_team(self):
-        return self._teams.active_team
+        return self._player_teams.active_team
 
     @property
     def active_role(self):
         return self._active_role
 
     def teams_remaining(self) -> int:
-        return len(self._teams)
+        return len(self._player_teams)
 
     def codename_identity(self, codename: Codename):
         return self._codename_identities[codename]
@@ -176,18 +178,18 @@ class GameState:
     def _resolve_player_team_guess(self, identity: Team) -> None:
         if not self._unknown_agents[identity]:
             self._resolve_found_agents(identity)
-        if identity == self._teams.active_team:
+        if identity == self._player_teams.active_team:
             self._resolve_successful_guess()
         else:
             self._end_turn()
 
     def _resolve_found_agents(self, team: Team) -> None:
-        del self._teams[team]
+        del self._player_teams[team]
         self._team_outcomes.found_agents.append(team)
 
     def _resolve_fatal(self) -> None:
-        team = self._teams.active_team
-        del self._teams[team]
+        team = self._player_teams.active_team
+        del self._player_teams[team]
         self._team_outcomes.found_fatal.append(team)
 
     def _resolve_successful_guess(self) -> None:
@@ -197,7 +199,7 @@ class GameState:
             self._end_turn()
 
     def _end_turn(self) -> None:
-        _ = next(self._teams)
+        _ = next(self._player_teams)
         self._active_role = Role.CLUE_GIVER
         self._guesses_remaining = Quantity(0)
 

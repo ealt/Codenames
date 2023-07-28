@@ -2,21 +2,21 @@ from typing import Iterator
 
 from codenames.data.types import NullTeam
 from codenames.data.types import Team
-from codenames.game.player_team import PlayerTeam
+from codenames.game.player_team_node import PlayerTeamNode
 
 
-class PlayerTeams:
+class PlayerTeamList:
 
     def __init__(self, teams: list[Team]) -> None:
         self.__len = len(teams)
-        self._active = PlayerTeam(NullTeam)
+        self._active = PlayerTeamNode(NullTeam)
         if teams:
             self._init_cyclic_doubly_linked_list(teams)
 
     def _init_cyclic_doubly_linked_list(self, teams: list[Team]) -> None:
         if not teams:
             return
-        player_teams = [PlayerTeam(team) for team in teams]
+        player_teams = [PlayerTeamNode(team) for team in teams]
         prev = player_teams[-1]
         for player_team in player_teams:
             curr = player_team
@@ -32,7 +32,7 @@ class PlayerTeams:
     def __len__(self) -> int:
         return self.__len
 
-    def __getitem__(self, team: Team) -> PlayerTeam:
+    def __getitem__(self, team: Team) -> PlayerTeamNode:
         curr = self._active
         while curr.team != team:
             curr = curr.next
@@ -46,7 +46,7 @@ class PlayerTeams:
         node.next.prev = node.prev
         self.__len -= 1
         if len(self) == 0:
-            self._active = PlayerTeam(NullTeam)
+            self._active = PlayerTeamNode(NullTeam)
         elif node == self._active:
             self._active = node.next
 

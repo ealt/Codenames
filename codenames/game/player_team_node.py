@@ -1,12 +1,12 @@
 from codenames.data.types import Team
 
 
-class PlayerTeam:
+class PlayerTeamNode:
 
     def __init__(self, team: Team) -> None:
         self._team = team
-        self.prev: PlayerTeam = self
-        self.next: PlayerTeam = self
+        self.prev: PlayerTeamNode = self
+        self.next: PlayerTeamNode = self
 
     @property
     def team(self) -> Team:
