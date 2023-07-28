@@ -1,9 +1,6 @@
 from dataclasses import dataclass
 from dataclasses import field
-from typing import NamedTuple, NewType
-
-from codenames.data.codenames_pb2 import CommonInformation
-from codenames.data.codenames_pb2 import SecretInformation
+from typing import NewType
 
 Team = NewType('Team', int)
 NullTeam = Team(0)
@@ -26,8 +23,3 @@ IdentityCodenames = dict[Team, set[Codename]]
 class TeamOutcomes:
     found_agents: list[Team] = field(default_factory=list)
     found_assassin: list[Team] = field(default_factory=list)
-
-
-class Information(NamedTuple):
-    common: CommonInformation
-    secret: SecretInformation

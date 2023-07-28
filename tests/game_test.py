@@ -13,7 +13,7 @@ from codenames.data.types import Quantity
 from codenames.data.types import Team
 from codenames.data.types import TeamOutcomes
 from codenames.game.game import Game
-import codenames.game.game_state_generation as gsg
+from codenames.game.game_state import GameState
 from codenames.logging.game_logger import GameLogger
 from codenames.logging.logger_factory import CodeTalkerLoggerFactory
 from codenames.logging.types import LoggingData
@@ -46,7 +46,9 @@ def test_game(game_name: str) -> None:
     turn_history = cast(JsonTurnHistory, test_data['turn_history'])
     players = _get_players(player_teams, turn_history)
     secret_information = _get_secret_information(identity_codenames)
-    game_state = gsg.get_game_state(secret_information, player_teams)
+    game_state = GameState.from_secret_information(
+        secret_information, player_teams
+    )
     logging_data = _get_logging_data(game_name)
     logger_factory = CodeTalkerLoggerFactory(logging_data)
     game_logger = logger_factory.get_logger(GameLogger)
@@ -54,7 +56,7 @@ def test_game(game_name: str) -> None:
     game.play()
     team_outcomes = cast(JsonTeamOutcomes, test_data['team_outcomes'])
     expected_outcomes = _get_team_outcomes(team_outcomes)
-    assert game.game_state.team_outcomes == expected_outcomes
+    assert game.game_state._team_outcomes == expected_outcomes
 
 
 def _load_test_data(game_name: str) -> TestData:
